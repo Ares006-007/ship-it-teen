@@ -5,8 +5,8 @@
 - [x] Design System Tokens (Tailwind Config)
 - [x] Custom Cursor Component
 - [x] Grid Texture Overlay
-- [ ] Reveal Wrapper Component
-- [ ] Hero Section
+- [x] Reveal Wrapper Component
+- [x] Hero Section
 - [ ] What is ShipIt Section
 - [ ] Programs/Tracks Section
 - [ ] Projects Showcase Section
