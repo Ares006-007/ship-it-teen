@@ -3,6 +3,7 @@ import { Sora, Poppins } from "next/font/google";
 import "./globals.css";
 import { CursorFollower } from "@/components/CursorFollower";
 import { GridOverlay } from "@/components/GridOverlay";
+import { Navbar } from "@/components/Navbar";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen bg-[var(--color-shipit-white)] text-[var(--color-shipit-black)] overflow-x-hidden">
         <GridOverlay />
         <CursorFollower />
+        <Navbar />
         {children}
       </body>
     </html>

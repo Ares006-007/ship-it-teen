@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { Rocket } from "lucide-react";
 
 export function CursorFollower() {
   const [isMounted, setIsMounted] = useState(false);
@@ -24,8 +23,8 @@ export function CursorFollower() {
     }
 
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
+      cursorX.set(e.clientX - 8);
+      cursorY.set(e.clientY - 8);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -53,7 +52,6 @@ export function CursorFollower() {
   }, [cursorX, cursorY]);
 
   if (!isMounted) return null;
-  // Hide on mobile/touch devices entirely via CSS classes
   
   return (
     <motion.div
@@ -63,14 +61,15 @@ export function CursorFollower() {
         y: smoothY,
       }}
       animate={{
-        scale: isHovering ? 2 : 1,
-        opacity: 1,
+        scale: isHovering ? 3 : 1,
       }}
       transition={{ duration: 0.15 }}
     >
-      <div className="relative flex items-center justify-center">
-        <Rocket className="text-white w-6 h-6 rotate-45 opacity-80" />
-      </div>
+      <div 
+        className={`w-4 h-4 rounded-full transition-colors duration-200 ${
+          isHovering ? "bg-red-500" : "bg-white"
+        }`} 
+      />
     </motion.div>
   );
 }

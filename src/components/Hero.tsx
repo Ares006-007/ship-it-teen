@@ -1,82 +1,64 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { RevealWrapper } from "./RevealWrapper";
-import { Rocket } from "lucide-react";
+
+const MARQUEE_TEXT = "BUILD IN PUBLIC · SHIP EARLY · SPEED OVER PERFECTION · CURIOSITY OVER CREDENTIALS · ";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
+    <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden bg-transparent border-b-4 border-black pt-20">
       
-      {/* Decorative Star/Sparkle Elements */}
-      <motion.div 
-        className="absolute top-1/4 left-1/4 text-[var(--color-shipit-yellow)] opacity-50 pointer-events-none"
-        animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 180] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-      >
-        ✨
-      </motion.div>
-      <motion.div 
-        className="absolute bottom-1/3 right-1/4 text-[var(--color-shipit-blue)] opacity-40 pointer-events-none text-2xl"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      >
-        {"</>"}
-      </motion.div>
+      {/* Background Section Number */}
+      <div className="absolute top-24 left-6 text-xl md:text-2xl font-bold tracking-widest text-black/20 select-none">
+        00 // START
+      </div>
 
-      {/* Main Content */}
-      <RevealWrapper delay={0.2} className="text-center z-10 max-w-4xl mx-auto flex flex-col items-center">
-        {/* Animated Rocket Launch on Load */}
-        <motion.div
-          initial={{ y: 100, opacity: 0, scale: 0.5 }}
-          animate={{ y: 0, opacity: 1, scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            delay: 0.1
-          }}
-          className="bg-white shadow-xl shadow-[var(--color-shipit-blue)]/10 rounded-full p-6 mb-8 relative"
+      <div className="max-w-7xl mx-auto px-6 w-full flex flex-col z-10 pt-16">
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-black"
         >
-          <Rocket className="w-16 h-16 text-[var(--color-shipit-blue)]" />
-          {/* Subtle rainbow trail under rocket */}
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-4 h-16 bg-gradient-to-b from-[var(--color-shipit-blue)] via-[var(--color-shipit-red)] to-[var(--color-shipit-yellow)] blur-md opacity-60 rounded-full" />
+          Stop Reading.<br />
+          Join The <span className="text-blue-600 block sm:inline">Movement.</span>
+        </motion.h1>
+
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-2xl md:text-4xl font-bold uppercase tracking-wide mb-12 text-black/80"
+        >
+          No fluff. Just building.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <a 
+            href="#apply"
+            className="inline-block bg-black text-white px-10 py-5 text-xl md:text-2xl font-black uppercase tracking-widest hover:bg-blue-600 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all border-2 border-black"
+          >
+            Apply to Join
+          </a>
         </motion.div>
+      </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-balance">
-          Ideas <span className="text-[var(--color-shipit-blue)]">→</span> People <span className="text-[var(--color-shipit-red)]">→</span> Projects
-        </h1>
-        
-        <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl text-balance">
-          We are <span className="font-semibold text-black">ShipIt Teens</span>. A STEM community where you don't need permission to start building.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="interactive px-8 py-4 bg-[var(--color-shipit-blue)] text-white font-semibold rounded-full shadow-lg shadow-[var(--color-shipit-blue)]/25 hover:shadow-xl transition-shadow text-lg"
-          >
-            Join the Community
-          </motion.button>
-          
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="interactive px-8 py-4 bg-white text-[var(--color-shipit-black)] font-semibold rounded-full border-2 border-gray-100 shadow-sm hover:border-gray-200 hover:bg-gray-50 transition-colors text-lg"
-          >
-            See What We've Built
-          </motion.button>
-        </div>
-      </RevealWrapper>
-
-      {/* Badge line */}
-      <RevealWrapper delay={0.6} className="mt-16 z-10">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-[var(--color-shipit-yellow)]/30 text-sm font-semibold text-gray-700 shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-[var(--color-shipit-yellow)] animate-pulse" />
-          Teens Make Cool Things
-        </div>
-      </RevealWrapper>
+      {/* Marquee Ticker */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden bg-black text-white py-4 border-t-4 border-black">
+        <motion.div 
+          className="whitespace-nowrap flex"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 15, ease: "linear", repeat: Infinity }}
+        >
+          <span className="text-xl md:text-3xl font-black tracking-widest uppercase px-4">
+            {MARQUEE_TEXT.repeat(10)}
+          </span>
+        </motion.div>
+      </div>
     </section>
   );
 }
