@@ -9,8 +9,8 @@
 - [x] Hero Section
 - [x] What is ShipIt Section
 - [x] Programs/Tracks Section
-- [ ] Projects Showcase Section
-- [ ] Community Wall Section
+- [x] Projects Showcase Section
+- [x] Community Wall Section
 - [ ] Events Timeline
 - [ ] Sponsors/Partners Strip
 - [ ] Footer CTA
