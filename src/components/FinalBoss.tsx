@@ -20,7 +20,7 @@ export function FinalBoss() {
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <div className="mb-12">
           <span className="text-xl md:text-2xl font-bold tracking-widest text-white/60">
-            04 // FINAL BOSS
+            05 // FINAL BOSS
           </span>
         </div>
 
