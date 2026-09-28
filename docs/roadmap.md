@@ -11,6 +11,6 @@
 - [x] Programs/Tracks Section
 - [x] Projects Showcase Section
 - [x] Community Wall Section
-- [ ] Events Timeline
-- [ ] Sponsors/Partners Strip
-- [ ] Footer CTA
+- [x] Events Timeline
+- [x] Sponsors/Partners Strip
+- [x] Footer CTA

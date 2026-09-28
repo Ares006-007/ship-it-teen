@@ -1,17 +1,38 @@
-# User Flow
+# ShipIt Single-Page Flow
 
-## Entry Path
-1. User lands on Hero section.
-2. Experiences the Rocket launch animation and the "Ideas → People → Projects" hook.
-3. Views Primary CTA: "Join the Community" / "Ship Your First Project".
+1. **Header/Navigation**
+   - Sticky navbar
+   - Logo ("SHIPIT")
+   - Links: Manifesto, The Work, Experiences
+   - Persistent CTA: "APPLY TO JOIN"
 
-## Exploration Path
-1. Scrolls to "What is ShipIt" to understand the pillars.
-2. Explores "Programs / Tracks" (Hackathons, Mentorship).
-3. Views the "Projects Showcase" to see tangible examples of what teens build.
-4. Reads the "Community Wall" for social proof.
+2. **Hero Section (Level 00)**
+   - High-energy, raw builder aesthetic
+   - Marquee ticker ("BUILD IN PUBLIC · SHIP EARLY · SPEED OVER PERFECTION · CURIOSITY OVER CREDENTIALS")
+   - Big, bold headline ("STOP READING. JOIN THE MOVEMENT.")
+   - Subtitle/Copy ("NO FLUFF. JUST BUILDING.")
+   - CTA ("APPLY TO JOIN")
 
-## Conversion Path
-1. Reach Events Timeline.
-2. Final strong CTA in footer.
-3. Clicks "Join" -> Directed to Discord / Signup flow.
+3. **The Manifesto (Level 01)**
+   - Anti-tutorial-hell mission statement
+   - Why this community exists
+   - Text-heavy, punchy phrases
+
+4. **What We Do (Level 02)**
+   - Card grid layout
+   - Short labels, no long paragraphs
+   - Categories: OPEN PROJECTS, HARDWARE HACKS, DEMO DAYS
+
+5. **Experiences (Level 03)**
+   - Named recurring events (Sunbeam, Daydream, CodeDay)
+   - Social proof, visual references/photos
+   - Builder-focused, high energy
+
+6. **Final Boss (Level 04)**
+   - Closing CTA
+   - Selectivity framing: "WE REVIEW EVERY APPLICATION"
+   - Large CTA button ("APPLY TO JOIN")
+
+7. **Footer**
+   - Minimal links
+   - Raw style
