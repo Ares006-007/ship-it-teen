@@ -7,8 +7,8 @@
 - [x] Grid Texture Overlay
 - [x] Reveal Wrapper Component
 - [x] Hero Section
-- [ ] What is ShipIt Section
-- [ ] Programs/Tracks Section
+- [x] What is ShipIt Section
+- [x] Programs/Tracks Section
 - [ ] Projects Showcase Section
 - [ ] Community Wall Section
 - [ ] Events Timeline
