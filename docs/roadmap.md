@@ -2,9 +2,9 @@
 
 - [ ] Project Scaffolding (Next.js, Tailwind, TS)
 - [ ] Base Architecture & Docs Initialized
-- [ ] Design System Tokens (Tailwind Config)
-- [ ] Custom Cursor Component
-- [ ] Grid Texture Overlay
+- [x] Design System Tokens (Tailwind Config)
+- [x] Custom Cursor Component
+- [x] Grid Texture Overlay
 - [ ] Reveal Wrapper Component
 - [ ] Hero Section
 - [ ] What is ShipIt Section
