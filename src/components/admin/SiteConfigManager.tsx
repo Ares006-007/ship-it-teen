@@ -42,6 +42,26 @@ export function SiteConfigManager() {
     fetchConfig();
   }, []);
 
+  const formatYoutubeUrl = (url: string) => {
+    if (!url) return "";
+    try {
+      let videoId = "";
+      if (url.includes("youtube.com/watch")) {
+        videoId = new URL(url).searchParams.get("v") || "";
+      } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1]?.split("?")[0];
+      } else if (url.includes("youtube.com/shorts/")) {
+        videoId = url.split("shorts/")[1]?.split("?")[0];
+      }
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+      return url;
+    } catch {
+      return url;
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -49,7 +69,14 @@ export function SiteConfigManager() {
     setSuccess("");
 
     try {
-      await setDoc(doc(db, "config", "hero"), config);
+      const formattedConfig = {
+        ytLink1: formatYoutubeUrl(config.ytLink1),
+        ytLink2: formatYoutubeUrl(config.ytLink2),
+      };
+      
+      setConfig(formattedConfig); // Update state to show the formatted version
+
+      await setDoc(doc(db, "config", "hero"), formattedConfig);
       setSuccess("Configuration saved successfully!");
       
       // Clear success message after 3 seconds

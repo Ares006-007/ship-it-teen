@@ -15,6 +15,26 @@ export function Hero() {
     ytLink2: "https://www.youtube.com/embed/jNQXAC9IVRw"
   });
 
+  const formatYoutubeUrl = (url: string) => {
+    if (!url) return "";
+    try {
+      let videoId = "";
+      if (url.includes("youtube.com/watch")) {
+        videoId = new URL(url).searchParams.get("v") || "";
+      } else if (url.includes("youtu.be/")) {
+        videoId = url.split("youtu.be/")[1]?.split("?")[0];
+      } else if (url.includes("youtube.com/shorts/")) {
+        videoId = url.split("shorts/")[1]?.split("?")[0];
+      }
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+      return url;
+    } catch {
+      return url;
+    }
+  };
+
   useEffect(() => {
     const fetchConfig = async () => {
       try {
@@ -22,8 +42,8 @@ export function Hero() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists() && docSnap.data().ytLink1) {
           setYtLinks({
-            ytLink1: docSnap.data().ytLink1,
-            ytLink2: docSnap.data().ytLink2 || "https://www.youtube.com/embed/jNQXAC9IVRw"
+            ytLink1: formatYoutubeUrl(docSnap.data().ytLink1),
+            ytLink2: formatYoutubeUrl(docSnap.data().ytLink2) || "https://www.youtube.com/embed/jNQXAC9IVRw"
           });
         }
       } catch (err) {

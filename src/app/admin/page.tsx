@@ -3,13 +3,14 @@
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { LogOut, LayoutDashboard, Calendar, Image as ImageIcon, Link as LinkIcon, Settings, Briefcase } from "lucide-react";
+import { LogOut, LayoutDashboard, Calendar, Image as ImageIcon, Link as LinkIcon, Settings, Briefcase, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { EventsManager } from "@/components/admin/EventsManager";
 import { JobsManager } from "@/components/admin/JobsManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { Overview } from "@/components/admin/Overview";
 import { SiteConfigManager } from "@/components/admin/SiteConfigManager";
+import { ExperiencesManager } from "@/components/admin/ExperiencesManager";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
   const tabs = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
     { id: "site-config", label: "Site Configuration", icon: Settings },
+    { id: "experiences", label: "Experiences", icon: Sparkles },
     { id: "events", label: "Events & Calendar", icon: Calendar },
     { id: "jobs", label: "Hiring & Jobs", icon: Briefcase },
     { id: "projects", label: "Projects Showcase", icon: ImageIcon },
@@ -83,6 +85,8 @@ export default function AdminDashboard() {
             <Overview />
           ) : activeTab === "site-config" ? (
             <SiteConfigManager />
+          ) : activeTab === "experiences" ? (
+            <ExperiencesManager />
           ) : activeTab === "events" ? (
             <EventsManager />
           ) : activeTab === "jobs" ? (
