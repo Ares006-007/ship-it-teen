@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Trash2, Plus, Calendar as CalendarIcon, Loader2 } from "lucide-react";
+import { Trash2, Plus, Calendar as CalendarIcon, Loader2, Image as ImageIcon } from "lucide-react";
 
 type Event = {
   id: string;
@@ -12,6 +12,7 @@ type Event = {
   location: string;
   status: string;
   link: string;
+  coverImage?: string;
   createdAt: any;
 };
 
@@ -27,11 +28,11 @@ export function EventsManager() {
     location: "",
     status: "OPEN",
     link: "",
+    coverImage: "",
   });
 
   const fetchEvents = async () => {
     try {
-      // Fetch without orderBy to avoid Firestore index requirement errors
       const querySnapshot = await getDocs(collection(db, "events"));
       const fetchedEvents: Event[] = [];
       querySnapshot.forEach((doc) => {
@@ -67,7 +68,7 @@ export function EventsManager() {
         ...newEvent,
         createdAt: serverTimestamp(),
       });
-      setNewEvent({ date: "", title: "", location: "", status: "OPEN", link: "" });
+      setNewEvent({ date: "", title: "", location: "", status: "OPEN", link: "", coverImage: "" });
       fetchEvents();
     } catch (err) {
       console.error(err);
@@ -150,12 +151,25 @@ export function EventsManager() {
               className="w-full bg-white border-4 border-black py-3 px-4 text-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:-translate-y-1 focus:translate-x-1 transition-all font-poppins"
             />
           </div>
-          <div className="md:col-span-2">
-            <label className="block text-sm font-poppins font-bold uppercase text-black mb-2">Registration Link (URL)</label>
+          <div>
+            <label className="block text-sm font-poppins font-bold uppercase text-black mb-2">RSVP Link (URL)</label>
             <input 
               type="url" 
               value={newEvent.link}
               onChange={(e) => setNewEvent({...newEvent, link: e.target.value})}
+              placeholder="https://..."
+              className="w-full bg-white border-4 border-black py-3 px-4 text-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:-translate-y-1 focus:translate-x-1 transition-all font-poppins"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-poppins font-bold uppercase text-black mb-2 flex items-center gap-2">
+              <ImageIcon className="w-4 h-4" /> Cover Image (URL)
+            </label>
+            <input 
+              type="url" 
+              value={newEvent.coverImage}
+              onChange={(e) => setNewEvent({...newEvent, coverImage: e.target.value})}
+              placeholder="https://..."
               className="w-full bg-white border-4 border-black py-3 px-4 text-black focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:-translate-y-1 focus:translate-x-1 transition-all font-poppins"
             />
           </div>
@@ -190,24 +204,41 @@ export function EventsManager() {
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {events.map((event) => (
-              <div key={event.id} className="bg-white border-4 border-black p-6 flex flex-col md:flex-row items-start md:items-center justify-between group hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all">
-                <div className="mb-4 md:mb-0">
-                  <div className="flex items-center gap-4 mb-2">
-                    <span className="bg-[var(--color-shipit-yellow)] px-2 py-1 border-2 border-black font-bold uppercase text-xs">
-                      {event.date}
-                    </span>
-                    <span className={`px-2 py-1 border-2 border-black font-bold uppercase text-xs ${event.status === 'WAITLIST' ? 'bg-[var(--color-shipit-red)]' : 'bg-[var(--color-shipit-green)]'}`}>
-                      {event.status}
-                    </span>
-                  </div>
-                  <h4 className="text-2xl font-sora font-black uppercase">{event.title}</h4>
-                  <div className="text-base text-black/70 font-poppins font-bold uppercase mt-1">
-                    {event.location}
+              <div key={event.id} className="bg-white border-4 border-black p-6 flex flex-col md:flex-row items-start md:items-center justify-between group hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all gap-4">
+                <div className="flex gap-6 items-center w-full">
+                  {event.coverImage && (
+                    <div className="hidden sm:block shrink-0 w-24 h-24 border-2 border-black overflow-hidden bg-neutral-200">
+                      <img src={event.coverImage} alt={event.title} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-4 mb-2">
+                      <span className="bg-[var(--color-shipit-yellow)] px-2 py-1 border-2 border-black font-bold uppercase text-xs">
+                        {event.date}
+                      </span>
+                      <span className={`px-2 py-1 border-2 border-black font-bold uppercase text-xs ${event.status === 'WAITLIST' ? 'bg-[var(--color-shipit-red)]' : 'bg-[var(--color-shipit-green)]'}`}>
+                        {event.status}
+                      </span>
+                    </div>
+                    <h4 className="text-2xl font-sora font-black uppercase">{event.title}</h4>
+                    <div className="text-base text-black/70 font-poppins font-bold uppercase mt-1">
+                      {event.location}
+                    </div>
+                    {event.link && (
+                      <a 
+                        href={event.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-block mt-3 text-sm font-bold uppercase text-blue-600 hover:text-blue-800 underline underline-offset-4"
+                      >
+                        → Open RSVP Link
+                      </a>
+                    )}
                   </div>
                 </div>
                 <button 
                   onClick={() => handleDelete(event.id)}
-                  className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                  className="shrink-0 bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
                   title="Delete Event"
                 >
                   <Trash2 className="w-5 h-5" />

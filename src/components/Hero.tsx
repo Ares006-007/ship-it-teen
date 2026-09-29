@@ -1,13 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const MARQUEE_TEXT = "BUILD IN PUBLIC · SHIP EARLY · SPEED OVER PERFECTION · CURIOSITY OVER CREDENTIALS · ";
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [ytLinks, setYtLinks] = useState({
+    ytLink1: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    ytLink2: "https://www.youtube.com/embed/jNQXAC9IVRw"
+  });
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const docRef = doc(db, "config", "hero");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().ytLink1) {
+          setYtLinks({
+            ytLink1: docSnap.data().ytLink1,
+            ytLink2: docSnap.data().ytLink2 || "https://www.youtube.com/embed/jNQXAC9IVRw"
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load hero config", err);
+      }
+    };
+    fetchConfig();
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -112,7 +136,7 @@ export function Hero() {
               </div>
               
               <iframe 
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&showinfo=0" 
+                src={`${ytLinks.ytLink1}?autoplay=0&controls=1&showinfo=0`} 
                 title="YouTube video player 1" 
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -142,7 +166,7 @@ export function Hero() {
               </div>
               
               <iframe 
-                src="https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=0&controls=1&showinfo=0" 
+                src={`${ytLinks.ytLink2}?autoplay=0&controls=1&showinfo=0`} 
                 title="YouTube video player 2" 
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 

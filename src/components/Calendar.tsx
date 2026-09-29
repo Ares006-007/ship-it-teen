@@ -13,6 +13,7 @@ type Event = {
   location: string;
   status: string;
   link: string;
+  coverImage?: string;
 };
 
 export function Calendar() {
@@ -77,8 +78,13 @@ export function Calendar() {
                 whileHover={{ x: 10 }}
                 className="flex flex-col md:flex-row items-start md:items-center justify-between border-4 border-black p-6 md:p-8 hover:bg-black hover:text-white transition-colors group"
               >
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 mb-6 md:mb-0">
-                  <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-blue-600 group-hover:text-yellow-400 transition-colors w-40">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 mb-6 md:mb-0 w-full md:w-auto">
+                  {event.coverImage && (
+                    <div className="hidden md:block w-32 h-32 border-4 border-black shrink-0 overflow-hidden bg-neutral-200 group-hover:border-white transition-colors">
+                      <img src={event.coverImage} alt={event.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
+                    </div>
+                  )}
+                  <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-blue-600 group-hover:text-yellow-400 transition-colors w-40 shrink-0">
                     {event.date}
                   </div>
                   <div>

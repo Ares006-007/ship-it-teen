@@ -9,6 +9,7 @@ export function Footer() {
         </div>
         
         <div className="flex flex-wrap justify-center gap-8 font-bold uppercase tracking-widest text-sm text-white/60">
+          <Link href="/work-with-us" className="hover:text-white transition-colors">Work With Us</Link>
           <a href="#" className="hover:text-white transition-colors">Twitter</a>
           <a href="#" className="hover:text-white transition-colors">GitHub</a>
           <a href="#" className="hover:text-white transition-colors">Discord</a>

@@ -3,13 +3,17 @@
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { LogOut, LayoutDashboard, Calendar, Image as ImageIcon, Link as LinkIcon, Settings } from "lucide-react";
+import { LogOut, LayoutDashboard, Calendar, Image as ImageIcon, Link as LinkIcon, Settings, Briefcase } from "lucide-react";
 import { useState } from "react";
 import { EventsManager } from "@/components/admin/EventsManager";
+import { JobsManager } from "@/components/admin/JobsManager";
+import { ProjectsManager } from "@/components/admin/ProjectsManager";
+import { Overview } from "@/components/admin/Overview";
+import { SiteConfigManager } from "@/components/admin/SiteConfigManager";
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("events");
+  const [activeTab, setActiveTab] = useState("overview");
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -20,6 +24,7 @@ export default function AdminDashboard() {
     { id: "overview", label: "Overview", icon: LayoutDashboard },
     { id: "site-config", label: "Site Configuration", icon: Settings },
     { id: "events", label: "Events & Calendar", icon: Calendar },
+    { id: "jobs", label: "Hiring & Jobs", icon: Briefcase },
     { id: "projects", label: "Projects Showcase", icon: ImageIcon },
     { id: "links", label: "Navigation & Links", icon: LinkIcon },
   ];
@@ -74,8 +79,16 @@ export default function AdminDashboard() {
             <div className="text-xl font-bold font-poppins">/ {activeTab.toUpperCase()}</div>
           </div>
           
-          {activeTab === "events" ? (
+          {activeTab === "overview" ? (
+            <Overview />
+          ) : activeTab === "site-config" ? (
+            <SiteConfigManager />
+          ) : activeTab === "events" ? (
             <EventsManager />
+          ) : activeTab === "jobs" ? (
+            <JobsManager />
+          ) : activeTab === "projects" ? (
+            <ProjectsManager />
           ) : (
             <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 relative">
               <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 font-bold uppercase text-xs border-b-4 border-l-4 border-black">
