@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="bg-black text-white py-12 border-t-4 border-black">
@@ -6,10 +8,11 @@ export function Footer() {
           SHIPIT TEENS
         </div>
         
-        <div className="flex gap-8 font-bold uppercase tracking-widest text-sm text-white/60">
+        <div className="flex flex-wrap justify-center gap-8 font-bold uppercase tracking-widest text-sm text-white/60">
           <a href="#" className="hover:text-white transition-colors">Twitter</a>
           <a href="#" className="hover:text-white transition-colors">GitHub</a>
           <a href="#" className="hover:text-white transition-colors">Discord</a>
+          <Link href="/admin/login" className="hover:text-[var(--color-shipit-yellow)] transition-colors">Admin</Link>
         </div>
 
         <div className="font-bold uppercase tracking-widest text-sm text-white/40">
