@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Trash2, Plus, Briefcase, Loader2 } from "lucide-react";
+import { Trash2, Plus, Briefcase, Loader2, Edit } from "lucide-react";
 
 type Job = {
   id: string;
@@ -19,6 +19,7 @@ export function JobsManager() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [newJob, setNewJob] = useState({
     title: "",
@@ -54,24 +55,45 @@ export function JobsManager() {
     fetchJobs();
   }, []);
 
-  const handleAddJob = async (e: React.FormEvent) => {
+  const handleSaveJob = async (e: React.FormEvent) => {
     e.preventDefault();
     setAdding(true);
     setError("");
 
     try {
-      await addDoc(collection(db, "jobs"), {
-        ...newJob,
-        createdAt: serverTimestamp(),
-      });
+      if (editingId) {
+        await updateDoc(doc(db, "jobs", editingId), {
+          title: newJob.title,
+          tags: newJob.tags,
+          description: newJob.description,
+          link: newJob.link,
+        });
+        setEditingId(null);
+      } else {
+        await addDoc(collection(db, "jobs"), {
+          ...newJob,
+          createdAt: serverTimestamp(),
+        });
+      }
       setNewJob({ title: "", tags: "", description: "", link: "" });
       fetchJobs();
     } catch (err) {
       console.error(err);
-      setError("Failed to add job. Make sure your Firestore rules allow writes.");
+      setError("Failed to save job. Make sure your Firestore rules allow writes.");
     } finally {
       setAdding(false);
     }
+  };
+
+  const handleEditClick = (job: Job) => {
+    setEditingId(job.id);
+    setNewJob({
+      title: job.title,
+      tags: job.tags,
+      description: job.description,
+      link: job.link || "",
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id: string) => {
@@ -101,12 +123,12 @@ export function JobsManager() {
         
         <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center gap-3">
           <div className="bg-black text-white p-2 border-2 border-black">
-            <Plus className="w-5 h-5" />
+            {editingId ? <Edit className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
           </div>
-          Add New Job Posting
+          {editingId ? "Edit Job Posting" : "Add New Job Posting"}
         </h3>
         
-        <form onSubmit={handleAddJob} className="grid grid-cols-1 gap-6">
+        <form onSubmit={handleSaveJob} className="grid grid-cols-1 gap-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-poppins font-bold uppercase text-black mb-2">Job Title</label>
@@ -154,13 +176,25 @@ export function JobsManager() {
             />
           </div>
           
-          <div className="pt-4 border-t-4 border-black flex justify-end mt-2">
+          <div className="pt-4 border-t-4 border-black flex justify-end mt-2 gap-4">
+            {editingId && (
+              <button 
+                type="button"
+                onClick={() => {
+                  setEditingId(null);
+                  setNewJob({ title: "", tags: "", description: "", link: "" });
+                }}
+                className="bg-white hover:bg-neutral-200 text-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 font-sora font-black uppercase py-3 px-8 transition-all flex items-center gap-2"
+              >
+                Cancel
+              </button>
+            )}
             <button 
               type="submit"
               disabled={adding}
               className="bg-[var(--color-shipit-purple)] hover:bg-black text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 font-sora font-black uppercase py-3 px-8 transition-all flex items-center gap-2 disabled:opacity-50"
             >
-              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Job Posting"}
+              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingId ? "Update Job Posting" : "Save Job Posting")}
             </button>
           </div>
         </form>
@@ -209,13 +243,22 @@ export function JobsManager() {
                     </a>
                   )}
                 </div>
-                <button 
-                  onClick={() => handleDelete(job.id)}
-                  className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 shrink-0"
-                  title="Delete Job"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                <div className="flex gap-2 shrink-0">
+                  <button 
+                    onClick={() => handleEditClick(job)}
+                    className="bg-white hover:bg-[var(--color-shipit-yellow)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Edit Job"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(job.id)}
+                    className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Delete Job"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
