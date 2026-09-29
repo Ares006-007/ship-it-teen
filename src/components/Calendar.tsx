@@ -80,8 +80,8 @@ export function Calendar() {
               >
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 mb-6 md:mb-0 w-full md:w-auto">
                   {event.coverImage && (
-                    <div className="hidden md:block w-32 h-32 border-4 border-black shrink-0 overflow-hidden bg-neutral-200 group-hover:border-white transition-colors">
-                      <img src={event.coverImage} alt={event.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
+                    <div className="hidden md:block w-48 h-48 border-4 border-black shrink-0 overflow-hidden bg-neutral-200 group-hover:border-white transition-colors flex items-center justify-center">
+                      <img src={event.coverImage} alt={event.title} className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
                     </div>
                   )}
                   <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-blue-600 group-hover:text-yellow-400 transition-colors w-40 shrink-0">
