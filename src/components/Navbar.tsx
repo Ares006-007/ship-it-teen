@@ -2,8 +2,28 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export function Navbar() {
+  const [applyUrl, setApplyUrl] = useState("https://2ydjdh3asn.zite.so");
+
+  useEffect(() => {
+    const fetchLink = async () => {
+      try {
+        const docRef = doc(db, "config", "links");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().applyFormUrl) {
+          setApplyUrl(docSnap.data().applyFormUrl);
+        }
+      } catch (err) {
+        console.error("Failed to load apply form url", err);
+      }
+    };
+    fetchLink();
+  }, []);
+
   return (
     <motion.nav 
       initial={{ y: -100 }}
@@ -21,12 +41,14 @@ export function Navbar() {
           <Link href="/#experiences" className="hover:text-[var(--color-shipit-blue)] transition-colors">Experiences</Link>
         </div>
 
-        <Link 
-          href="/#apply" 
+        <a 
+          href={applyUrl} 
+          target="_blank"
+          rel="noopener noreferrer"
           className="bg-black text-white px-6 py-2 font-bold uppercase tracking-widest text-sm hover:bg-[var(--color-shipit-blue)] hover:text-white transition-colors border-2 border-black hover:border-[var(--color-shipit-blue)]"
         >
           Apply to Join
-        </Link>
+        </a>
       </div>
     </motion.nav>
   );

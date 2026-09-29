@@ -11,6 +11,7 @@ import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { Overview } from "@/components/admin/Overview";
 import { SiteConfigManager } from "@/components/admin/SiteConfigManager";
 import { ExperiencesManager } from "@/components/admin/ExperiencesManager";
+import { LinksManager } from "@/components/admin/LinksManager";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -93,6 +94,8 @@ export default function AdminDashboard() {
             <JobsManager />
           ) : activeTab === "projects" ? (
             <ProjectsManager />
+          ) : activeTab === "links" ? (
+            <LinksManager />
           ) : (
             <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 relative">
               <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 font-bold uppercase text-xs border-b-4 border-l-4 border-black">

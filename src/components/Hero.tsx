@@ -35,19 +35,31 @@ export function Hero() {
     }
   };
 
+  const [applyUrl, setApplyUrl] = useState("https://2ydjdh3asn.zite.so");
+
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const docRef = doc(db, "config", "hero");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists() && docSnap.data().ytLink1) {
+        const heroRef = doc(db, "config", "hero");
+        const linksRef = doc(db, "config", "links");
+        
+        const [heroSnap, linksSnap] = await Promise.all([
+          getDoc(heroRef),
+          getDoc(linksRef)
+        ]);
+
+        if (heroSnap.exists() && heroSnap.data().ytLink1) {
           setYtLinks({
-            ytLink1: formatYoutubeUrl(docSnap.data().ytLink1),
-            ytLink2: formatYoutubeUrl(docSnap.data().ytLink2) || "https://www.youtube.com/embed/jNQXAC9IVRw"
+            ytLink1: formatYoutubeUrl(heroSnap.data().ytLink1),
+            ytLink2: formatYoutubeUrl(heroSnap.data().ytLink2) || "https://www.youtube.com/embed/jNQXAC9IVRw"
           });
         }
+        
+        if (linksSnap.exists() && linksSnap.data().applyFormUrl) {
+          setApplyUrl(linksSnap.data().applyFormUrl);
+        }
       } catch (err) {
-        console.error("Failed to load hero config", err);
+        console.error("Failed to load configs", err);
       }
     };
     fetchConfig();
@@ -129,7 +141,9 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <a 
-              href="#apply"
+              href={applyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block bg-black text-white px-10 py-5 text-xl md:text-2xl font-black uppercase tracking-widest hover:bg-blue-600 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all border-4 border-black"
             >
               Apply to Join
