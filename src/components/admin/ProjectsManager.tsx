@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Trash2, Plus, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Trash2, Plus, Image as ImageIcon, Loader2, Edit2 } from "lucide-react";
 
 type Project = {
   id: string;
@@ -18,6 +18,7 @@ export function ProjectsManager() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   const [newProject, setNewProject] = useState({
@@ -59,15 +60,22 @@ export function ProjectsManager() {
     setError("");
 
     try {
-      await addDoc(collection(db, "projects"), {
-        ...newProject,
-        createdAt: serverTimestamp(),
-      });
+      if (editingId) {
+        await updateDoc(doc(db, "projects", editingId), {
+          ...newProject,
+        });
+        setEditingId(null);
+      } else {
+        await addDoc(collection(db, "projects"), {
+          ...newProject,
+          createdAt: serverTimestamp(),
+        });
+      }
       setNewProject({ title: "", author: "", description: "", link: "" });
       fetchProjects();
     } catch (err) {
       console.error(err);
-      setError("Failed to add project.");
+      setError(`Failed to ${editingId ? "update" : "add"} project.`);
     } finally {
       setAdding(false);
     }
@@ -98,11 +106,25 @@ export function ProjectsManager() {
           Action Area
         </div>
         
-        <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center gap-3">
-          <div className="bg-black text-white p-2 border-2 border-black">
-            <Plus className="w-5 h-5" />
+        <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-black text-white p-2 border-2 border-black">
+              {editingId ? <Edit2 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            </div>
+            {editingId ? "Edit Showcase Project" : "Add Showcase Project"}
           </div>
-          Add Showcase Project
+          {editingId && (
+            <button 
+              type="button"
+              onClick={() => {
+                setEditingId(null);
+                setNewProject({ title: "", author: "", description: "", link: "" });
+              }}
+              className="text-sm font-poppins underline hover:text-black/70"
+            >
+              Cancel Edit
+            </button>
+          )}
         </h3>
         
         <form onSubmit={handleAddProject} className="grid grid-cols-1 gap-6">
@@ -148,7 +170,7 @@ export function ProjectsManager() {
               type="submit" disabled={adding}
               className="bg-[var(--color-shipit-yellow)] hover:bg-black text-black hover:text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 font-sora font-black uppercase py-3 px-8 transition-all flex items-center gap-2 disabled:opacity-50"
             >
-              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Project"}
+              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingId ? "Update Project" : "Save Project")}
             </button>
           </div>
         </form>
@@ -175,9 +197,27 @@ export function ProjectsManager() {
                   <h4 className="text-2xl font-sora font-black uppercase">{project.title}</h4>
                   <p className="text-sm font-bold mt-1 text-black/60">By {project.author}</p>
                 </div>
-                <button onClick={() => handleDelete(project.id)} className="border-4 border-black p-3 hover:bg-[var(--color-shipit-red)]">
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                <div className="flex gap-2 shrink-0">
+                  <button 
+                    onClick={() => {
+                      setNewProject({
+                        title: project.title,
+                        author: project.author,
+                        description: project.description,
+                        link: project.link || "",
+                      });
+                      setEditingId(project.id);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="bg-white hover:bg-black hover:text-white border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Edit Project"
+                  >
+                    <Edit2 className="w-5 h-5" />
+                  </button>
+                  <button onClick={() => handleDelete(project.id)} className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1">
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>

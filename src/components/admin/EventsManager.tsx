@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Trash2, Plus, Calendar as CalendarIcon, Loader2, Image as ImageIcon } from "lucide-react";
+import { Trash2, Plus, Calendar as CalendarIcon, Loader2, Image as ImageIcon, Edit2 } from "lucide-react";
 
 type Event = {
   id: string;
@@ -20,6 +20,7 @@ export function EventsManager() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   const [newEvent, setNewEvent] = useState({
@@ -64,15 +65,22 @@ export function EventsManager() {
     setError("");
 
     try {
-      await addDoc(collection(db, "events"), {
-        ...newEvent,
-        createdAt: serverTimestamp(),
-      });
+      if (editingId) {
+        await updateDoc(doc(db, "events", editingId), {
+          ...newEvent,
+        });
+        setEditingId(null);
+      } else {
+        await addDoc(collection(db, "events"), {
+          ...newEvent,
+          createdAt: serverTimestamp(),
+        });
+      }
       setNewEvent({ date: "", title: "", location: "", status: "OPEN", link: "", coverImage: "" });
       fetchEvents();
     } catch (err) {
       console.error(err);
-      setError("Failed to add event. Make sure your Firestore rules allow writes.");
+      setError(`Failed to ${editingId ? "update" : "add"} event. Make sure your Firestore rules allow writes.`);
     } finally {
       setAdding(false);
     }
@@ -103,11 +111,25 @@ export function EventsManager() {
           Action Area
         </div>
         
-        <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center gap-3">
-          <div className="bg-black text-white p-2 border-2 border-black">
-            <Plus className="w-5 h-5" />
+        <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-black text-white p-2 border-2 border-black">
+              {editingId ? <Edit2 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            </div>
+            {editingId ? "Edit Event" : "Add New Event"}
           </div>
-          Add New Event
+          {editingId && (
+            <button 
+              type="button"
+              onClick={() => {
+                setEditingId(null);
+                setNewEvent({ date: "", title: "", location: "", status: "OPEN", link: "", coverImage: "" });
+              }}
+              className="text-sm font-poppins underline hover:text-black/70"
+            >
+              Cancel Edit
+            </button>
+          )}
         </h3>
         
         <form onSubmit={handleAddEvent} className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -179,7 +201,7 @@ export function EventsManager() {
               disabled={adding}
               className="bg-[var(--color-shipit-green)] hover:bg-black text-black hover:text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 font-sora font-black uppercase py-3 px-8 transition-all flex items-center gap-2 disabled:opacity-50"
             >
-              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Event"}
+              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingId ? "Update Event" : "Save Event")}
             </button>
           </div>
         </form>
@@ -239,13 +261,33 @@ export function EventsManager() {
                     )}
                   </div>
                 </div>
-                <button 
-                  onClick={() => handleDelete(event.id)}
-                  className="shrink-0 bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
-                  title="Delete Event"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                <div className="flex flex-col gap-2 shrink-0">
+                  <button 
+                    onClick={() => {
+                      setNewEvent({
+                        date: event.date,
+                        title: event.title,
+                        location: event.location,
+                        status: event.status,
+                        link: event.link || "",
+                        coverImage: event.coverImage || "",
+                      });
+                      setEditingId(event.id);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="bg-white hover:bg-black hover:text-white border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Edit Event"
+                  >
+                    <Edit2 className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(event.id)}
+                    className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Delete Event"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Trash2, Plus, Image as ImageIcon, Loader2, Sparkles } from "lucide-react";
+import { Trash2, Plus, Image as ImageIcon, Loader2, Sparkles, Edit2 } from "lucide-react";
 
 type Experience = {
   id: string;
@@ -27,6 +27,7 @@ export function ExperiencesManager() {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   const [newExp, setNewExp] = useState({
@@ -68,15 +69,22 @@ export function ExperiencesManager() {
     setError("");
 
     try {
-      await addDoc(collection(db, "experiences"), {
-        ...newExp,
-        createdAt: serverTimestamp(),
-      });
+      if (editingId) {
+        await updateDoc(doc(db, "experiences", editingId), {
+          ...newExp,
+        });
+        setEditingId(null);
+      } else {
+        await addDoc(collection(db, "experiences"), {
+          ...newExp,
+          createdAt: serverTimestamp(),
+        });
+      }
       setNewExp({ name: "", desc: "", coverImage: "", bgColor: "bg-blue-100" });
       fetchExperiences();
     } catch (err) {
       console.error(err);
-      setError("Failed to add experience.");
+      setError(`Failed to ${editingId ? "update" : "add"} experience.`);
     } finally {
       setAdding(false);
     }
@@ -107,11 +115,25 @@ export function ExperiencesManager() {
           Action Area
         </div>
         
-        <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center gap-3">
-          <div className="bg-black text-white p-2 border-2 border-black">
-            <Plus className="w-5 h-5" />
+        <h3 className="text-2xl font-sora font-black uppercase text-black mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-black text-white p-2 border-2 border-black">
+              {editingId ? <Edit2 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            </div>
+            {editingId ? "Edit Experience" : "Add New Experience"}
           </div>
-          Add New Experience
+          {editingId && (
+            <button 
+              type="button"
+              onClick={() => {
+                setEditingId(null);
+                setNewExp({ name: "", desc: "", coverImage: "", bgColor: "bg-blue-100" });
+              }}
+              className="text-sm font-poppins underline hover:text-black/70"
+            >
+              Cancel Edit
+            </button>
+          )}
         </h3>
         
         <form onSubmit={handleAddExp} className="grid grid-cols-1 gap-6">
@@ -170,7 +192,7 @@ export function ExperiencesManager() {
               disabled={adding}
               className="bg-black hover:bg-[var(--color-shipit-yellow)] text-white hover:text-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 font-sora font-black uppercase py-3 px-8 transition-all flex items-center gap-2 disabled:opacity-50"
             >
-              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Experience"}
+              {adding ? <Loader2 className="w-5 h-5 animate-spin" /> : (editingId ? "Update Experience" : "Save Experience")}
             </button>
           </div>
         </form>
@@ -208,13 +230,31 @@ export function ExperiencesManager() {
                     </div>
                   </div>
                 </div>
-                <button 
-                  onClick={() => handleDelete(exp.id)}
-                  className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 shrink-0"
-                  title="Delete Experience"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                <div className="flex flex-col gap-2 shrink-0">
+                  <button 
+                    onClick={() => {
+                      setNewExp({
+                        name: exp.name,
+                        desc: exp.desc,
+                        coverImage: exp.coverImage || "",
+                        bgColor: exp.bgColor || "bg-blue-100",
+                      });
+                      setEditingId(exp.id);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="bg-white hover:bg-black hover:text-white border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Edit Experience"
+                  >
+                    <Edit2 className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(exp.id)}
+                    className="bg-white hover:bg-[var(--color-shipit-red)] border-4 border-black p-3 text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1"
+                    title="Delete Experience"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
