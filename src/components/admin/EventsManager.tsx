@@ -142,7 +142,7 @@ export function EventsManager() {
             />
           </div>
           <div>
-            <label className="block text-sm font-poppins font-bold uppercase text-black mb-2">Status (OPEN, WAITLIST)</label>
+            <label className="block text-sm font-poppins font-bold uppercase text-black mb-2">Status (OPEN, WAITLIST, RSVP YET TO OPEN)</label>
             <input 
               type="text" 
               required
@@ -216,7 +216,10 @@ export function EventsManager() {
                       <span className="bg-[var(--color-shipit-yellow)] px-2 py-1 border-2 border-black font-bold uppercase text-xs">
                         {event.date}
                       </span>
-                      <span className={`px-2 py-1 border-2 border-black font-bold uppercase text-xs ${event.status === 'WAITLIST' ? 'bg-[var(--color-shipit-red)]' : 'bg-[var(--color-shipit-green)]'}`}>
+                      <span className={`px-2 py-1 border-2 border-black font-bold uppercase text-xs ${
+                        event.status.toUpperCase() === 'WAITLIST' || event.status.toUpperCase() === 'CLOSED' ? 'bg-[var(--color-shipit-red)]' : 
+                        event.status.toUpperCase() === 'RSVP YET TO OPEN' ? 'bg-gray-300' : 'bg-[var(--color-shipit-green)]'
+                      }`}>
                         {event.status}
                       </span>
                     </div>

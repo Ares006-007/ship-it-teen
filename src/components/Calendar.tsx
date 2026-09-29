@@ -100,7 +100,7 @@ export function Calendar() {
                   target={event.link ? "_blank" : "_self"}
                   rel="noopener noreferrer"
                   className={`inline-block px-8 py-4 font-black uppercase tracking-widest border-4 transition-all ${
-                    event.status.toUpperCase() === 'WAITLIST' || event.status.toUpperCase() === 'CLOSED'
+                    event.status.toUpperCase() === 'WAITLIST' || event.status.toUpperCase() === 'CLOSED' || event.status.toUpperCase() === 'RSVP YET TO OPEN'
                       ? 'border-gray-500 text-gray-500 bg-transparent cursor-not-allowed group-hover:border-gray-400 group-hover:text-gray-400' 
                       : 'border-black bg-yellow-400 text-black group-hover:bg-white group-hover:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:-translate-y-1'
                   }`}
