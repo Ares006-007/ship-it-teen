@@ -19,6 +19,8 @@ type Event = {
 export function EventsManager() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState<"date" | "title" | "created">("date");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [adding, setAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -40,11 +42,7 @@ export function EventsManager() {
         fetchedEvents.push({ id: doc.id, ...doc.data() } as Event);
       });
       
-      // Sort events manually based on createdAt timestamp
-      fetchedEvents.sort((a: any, b: any) => {
-        if (!a.createdAt || !b.createdAt) return 0;
-        return a.createdAt.seconds - b.createdAt.seconds;
-      });
+      // We don't sort here anymore, we sort on the fly during render
 
       setEvents(fetchedEvents);
     } catch (err: any) {
@@ -209,10 +207,28 @@ export function EventsManager() {
 
       {/* Events List */}
       <div>
-        <h3 className="text-3xl font-sora font-black uppercase text-black mb-6 flex items-center gap-3">
-          <CalendarIcon className="w-8 h-8" />
-          Manage Events
-        </h3>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <h3 className="text-3xl font-sora font-black uppercase text-black flex items-center gap-3">
+            <CalendarIcon className="w-8 h-8" />
+            Manage Events
+          </h3>
+          <select 
+            value={`${sortBy}-${sortOrder}`}
+            onChange={(e) => {
+              const [newSort, newOrder] = e.target.value.split("-");
+              setSortBy(newSort as any);
+              setSortOrder(newOrder as any);
+            }}
+            className="bg-white border-4 border-black text-black font-bold font-poppins uppercase text-sm py-2 px-2 focus:outline-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+          >
+            <option value="date-asc">Sort by Date (Asc)</option>
+            <option value="date-desc">Sort by Date (Desc)</option>
+            <option value="title-asc">Sort by Title (A-Z)</option>
+            <option value="title-desc">Sort by Title (Z-A)</option>
+            <option value="created-desc">Sort by Newest</option>
+            <option value="created-asc">Sort by Oldest</option>
+          </select>
+        </div>
         
         {loading ? (
           <div className="text-black font-poppins font-bold uppercase flex items-center gap-2">
@@ -225,7 +241,30 @@ export function EventsManager() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4">
-            {events.map((event) => (
+            {[...events].sort((a: any, b: any) => {
+              if (sortBy === "created") {
+                const timeA = a.createdAt?.seconds || 0;
+                const timeB = b.createdAt?.seconds || 0;
+                return sortOrder === "asc" ? timeA - timeB : timeB - timeA;
+              } else if (sortBy === "title") {
+                return sortOrder === "asc" 
+                  ? (a.title || "").localeCompare(b.title || "") 
+                  : (b.title || "").localeCompare(a.title || "");
+              } else {
+                const parseDate = (dateStr: string) => {
+                  const parsed = Date.parse(`${new Date().getFullYear()} ${dateStr}`);
+                  return isNaN(parsed) ? 0 : parsed;
+                };
+                const dateA = parseDate(a.date);
+                const dateB = parseDate(b.date);
+                if (dateA !== dateB) {
+                  return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+                }
+                return sortOrder === "asc" 
+                  ? (a.date || "").localeCompare(b.date || "") 
+                  : (b.date || "").localeCompare(a.date || "");
+              }
+            }).map((event) => (
               <div key={event.id} className="bg-white border-4 border-black p-6 flex flex-col md:flex-row items-start md:items-center justify-between group hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all gap-4">
                 <div className="flex gap-6 items-center w-full">
                   {event.coverImage && (

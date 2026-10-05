@@ -19,6 +19,8 @@ type Event = {
 export function Calendar() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState<"date" | "title" | "created">("date");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -30,12 +32,7 @@ export function Calendar() {
           fetchedEvents.push({ id: doc.id, ...doc.data() } as Event);
         });
 
-        // Sort events manually based on createdAt timestamp
-        fetchedEvents.sort((a: any, b: any) => {
-          if (!a.createdAt || !b.createdAt) return 0;
-          return a.createdAt.seconds - b.createdAt.seconds;
-        });
-
+        // We don't sort here anymore, we sort on the fly during render
         setEvents(fetchedEvents);
       } catch (err) {
         console.error("Error fetching events:", err);
@@ -49,13 +46,31 @@ export function Calendar() {
   return (
     <section id="calendar" className="relative py-32 border-b-4 border-black bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-16 flex justify-between items-end">
+        <div className="mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <span className="text-xl md:text-2xl font-bold tracking-widest text-black/40">
             04 // UPCOMING EVENTS
           </span>
-          <span className="hidden sm:block text-sm font-bold tracking-widest uppercase bg-black text-white px-3 py-1">
-            SYNC TO CALENDAR
-          </span>
+          <div className="flex items-center gap-4">
+            <select 
+              value={`${sortBy}-${sortOrder}`}
+              onChange={(e) => {
+                const [newSort, newOrder] = e.target.value.split("-");
+                setSortBy(newSort as any);
+                setSortOrder(newOrder as any);
+              }}
+              className="bg-white border-4 border-black text-black font-bold font-poppins uppercase text-sm py-2 px-2 focus:outline-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+            >
+              <option value="date-asc">Sort by Date (Asc)</option>
+              <option value="date-desc">Sort by Date (Desc)</option>
+              <option value="title-asc">Sort by Title (A-Z)</option>
+              <option value="title-desc">Sort by Title (Z-A)</option>
+              <option value="created-desc">Sort by Newest</option>
+              <option value="created-asc">Sort by Oldest</option>
+            </select>
+            <span className="hidden sm:block text-sm font-bold tracking-widest uppercase bg-black text-white px-3 py-1">
+              SYNC TO CALENDAR
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -68,7 +83,30 @@ export function Calendar() {
               NO UPCOMING EVENTS
             </div>
           ) : (
-            events.map((event, idx) => (
+            [...events].sort((a: any, b: any) => {
+              if (sortBy === "created") {
+                const timeA = a.createdAt?.seconds || 0;
+                const timeB = b.createdAt?.seconds || 0;
+                return sortOrder === "asc" ? timeA - timeB : timeB - timeA;
+              } else if (sortBy === "title") {
+                return sortOrder === "asc" 
+                  ? (a.title || "").localeCompare(b.title || "") 
+                  : (b.title || "").localeCompare(a.title || "");
+              } else {
+                const parseDate = (dateStr: string) => {
+                  const parsed = Date.parse(`${new Date().getFullYear()} ${dateStr}`);
+                  return isNaN(parsed) ? 0 : parsed;
+                };
+                const dateA = parseDate(a.date);
+                const dateB = parseDate(b.date);
+                if (dateA !== dateB) {
+                  return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+                }
+                return sortOrder === "asc" 
+                  ? (a.date || "").localeCompare(b.date || "") 
+                  : (b.date || "").localeCompare(a.date || "");
+              }
+            }).map((event, idx) => (
               <motion.div
                 key={event.id}
                 initial={{ opacity: 0, y: 30 }}
