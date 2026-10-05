@@ -94,7 +94,16 @@ export function Calendar() {
                   : (b.title || "").localeCompare(a.title || "");
               } else {
                 const parseDate = (dateStr: string) => {
-                  const parsed = Date.parse(`${new Date().getFullYear()} ${dateStr}`);
+                  if (!dateStr) return 0;
+                  // Remove ordinal suffixes (st, nd, rd, th) from numbers (case-insensitive)
+                  let cleanDateStr = dateStr.replace(/\b(\d+)(st|nd|rd|th)\b/gi, '$1');
+                  
+                  // If the string doesn't contain a 4-digit year, append the current year
+                  if (!/\b\d{4}\b/.test(cleanDateStr)) {
+                    cleanDateStr = `${cleanDateStr} ${new Date().getFullYear()}`;
+                  }
+                  
+                  const parsed = Date.parse(cleanDateStr);
                   return isNaN(parsed) ? 0 : parsed;
                 };
                 const dateA = parseDate(a.date);
