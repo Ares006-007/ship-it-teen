@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShipIt Teens
 
-## Getting Started
+**Build. Learn. Ship. Together.**
 
-First, run the development server:
+ShipIt Teens is a collective of teen builders who believe the best way to learn is to make things. We bring together curious students who want to move beyond endless tutorials, build real projects, and share what they create.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Our community is for people interested in software, hardware, open source, and ambitious side projects. You don’t need permission or a perfect plan to start—bring your curiosity, work with others, and ship something real.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What we do
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Open projects:** Build software, contribute to open source, and share work publicly.
+- **Hardware hacks:** Experiment with circuits, Raspberry Pis, robotics, and other hands-on ideas.
+- **Demo days:** Show what you made, get feedback, and celebrate shipping—not just planning.
+- **Community experiences:** Take part in builder-focused events and experiences shared on the site.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## The ShipIt mindset
 
-## Learn More
+- Build in public.
+- Ship early; learn by doing.
+- Choose speed over perfection.
+- Be curious, collaborate, and make things that matter to you.
 
-To learn more about Next.js, take a look at the following resources:
+ShipIt is not about collecting credentials or waiting until you feel like an expert. It’s about learning through building alongside other teens who are excited to create.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Join the community
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Interested in joining? [Apply to join ShipIt Teens](mailto:join@shipitteens.com). Applications are reviewed by the team.
 
-## Deploy on Vercel
+## Partner with us
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+ShipIt Teens works with people and organizations who want to support the next generation of builders. We’re open to conversations about sponsoring events, collaborating on open-source projects, and other ways to work together. Visit the [Work With Us page](/work-with-us) to learn more.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## About this website
+
+This website introduces the ShipIt Teens community and features its work, experiences, upcoming events, and ways to get involved. Event and experience details are published on the site as they become available.
