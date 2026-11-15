@@ -1,10 +1,10 @@
 "use client";
 
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { LogOut, LayoutDashboard, Calendar, Image as ImageIcon, Link as LinkIcon, Settings, Briefcase, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EventsManager } from "@/components/admin/EventsManager";
 import { JobsManager } from "@/components/admin/JobsManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
@@ -16,6 +16,14 @@ import { LinksManager } from "@/components/admin/LinksManager";
 export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -61,10 +69,31 @@ export default function AdminDashboard() {
           ))}
         </nav>
 
-        <div className="p-6 border-t-4 border-black bg-white">
+        <div className="p-6 border-t-4 border-black bg-white flex flex-col gap-3">
+          {currentUser && (
+            <div className="flex items-center gap-3 p-2 bg-neutral-100 border-2 border-black">
+              {currentUser.photoURL ? (
+                <img
+                  src={currentUser.photoURL}
+                  alt={currentUser.displayName || "User"}
+                  className="w-8 h-8 rounded-full border border-black object-cover"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-[var(--color-shipit-yellow)] border border-black flex items-center justify-center font-bold text-xs">
+                  {currentUser.email ? currentUser.email[0].toUpperCase() : "U"}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                {currentUser.displayName && (
+                  <p className="text-xs font-black truncate">{currentUser.displayName}</p>
+                )}
+                <p className="text-[11px] font-mono text-black/70 truncate">{currentUser.email}</p>
+              </div>
+            </div>
+          )}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--color-shipit-red)] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 text-black font-sora font-black uppercase transition-all text-sm"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--color-shipit-red)] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 text-black font-sora font-black uppercase transition-all text-sm cursor-pointer"
           >
             <LogOut className="w-5 h-5" />
             Sign Out
