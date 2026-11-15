@@ -45,7 +45,7 @@ Whether you are just getting started or already building ambitious projects, Shi
 
 ## Join the community
 
-Interested in joining? [Apply to join ShipIt Teens](mailto:join@shipitteens.com).
+Interested in joining? .
 
 Applications are reviewed by the team.
 
