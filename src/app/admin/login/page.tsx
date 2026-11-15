@@ -39,7 +39,12 @@ export default function AdminLogin() {
       router.push("/admin");
     } catch (err: any) {
       if (err.code !== "auth/popup-closed-by-user" && err.code !== "auth/cancelled-popup-request") {
-        setError(err.message || "Failed to sign in with Google.");
+        if (err.code === "auth/unauthorized-domain") {
+          const host = typeof window !== "undefined" ? window.location.hostname : "your current domain";
+          setError(`Domain "${host}" is not authorized in Firebase. Add it under Firebase Console > Authentication > Settings > Authorized domains.`);
+        } else {
+          setError(err.message || "Failed to sign in with Google.");
+        }
       }
       console.error(err);
     } finally {
