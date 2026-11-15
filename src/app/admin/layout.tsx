@@ -15,11 +15,21 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user && pathname !== "/admin/login") {
         router.push("/admin/login");
-      } else if (user && pathname === "/admin/login") {
-        router.push("/admin");
+      } else if (user) {
+        const userEmail = user.email?.toLowerCase();
+        if (!userEmail || !userEmail.endsWith("@gmail.com")) {
+          await auth.signOut();
+          if (pathname !== "/admin/login") {
+            router.push("/admin/login");
+          }
+        } else if (pathname === "/admin/login") {
+          router.push("/admin");
+        } else {
+          setLoading(false);
+        }
       } else {
         setLoading(false);
       }

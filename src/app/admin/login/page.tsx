@@ -18,9 +18,21 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    if (!email.trim().toLowerCase().endsWith("@gmail.com")) {
+      setError("Access restricted: Only @gmail.com accounts are authorized for admin login.");
+      setLoading(false);
+      return;
+    }
     
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userEmail = userCredential.user.email?.toLowerCase();
+      if (!userEmail || !userEmail.endsWith("@gmail.com")) {
+        await auth.signOut();
+        setError("Access restricted: Only @gmail.com accounts are authorized for admin login.");
+        return;
+      }
       router.push("/admin");
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred during login.");
@@ -35,7 +47,15 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const userEmail = result.user.email?.toLowerCase();
+
+      if (!userEmail || !userEmail.endsWith("@gmail.com")) {
+        await auth.signOut();
+        setError(`Access restricted: "${userEmail || 'This account'}" is not authorized. Only @gmail.com accounts can access the admin dashboard.`);
+        return;
+      }
+
       router.push("/admin");
     } catch (err: any) {
       if (err.code !== "auth/popup-closed-by-user" && err.code !== "auth/cancelled-popup-request") {
