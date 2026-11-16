@@ -33,3 +33,30 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sora);
   font-weight: 700;
 }
+
+/* ── Hero cursor blink ── */
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ── Hero marquee (CSS-only, one DOM copy duplicated) ── */
+@keyframes hero-marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.hero-marquee-track {
+  animation: hero-marquee-scroll 20s linear infinite;
+}
+
+.hero-marquee-fast {
+  animation-duration: 10s;
+}
+
+/* prefers-reduced-motion: pause marquee entirely */
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-track {
+    animation-play-state: paused;
+  }
+}
