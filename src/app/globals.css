@@ -60,3 +60,55 @@ h1, h2, h3, h4, h5, h6 {
     animation-play-state: paused;
   }
 }
+
+/* ── Partner logo marquee ── */
+@keyframes partner-marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.partner-marquee-track {
+  animation: partner-marquee-scroll 40s linear infinite;
+}
+
+/* Faster on mobile */
+@media (max-width: 767px) {
+  .partner-marquee-track {
+    animation-duration: 28s;
+  }
+}
+
+/* Pause on hover (desktop only) */
+@media (hover: hover) {
+  .partner-marquee-mask:hover .partner-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Edge fade mask */
+.partner-marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+/* prefers-reduced-motion: show static row, hide marquee */
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee-mask {
+    display: none;
+  }
+  .partner-static-row {
+    display: block !important;
+  }
+}
