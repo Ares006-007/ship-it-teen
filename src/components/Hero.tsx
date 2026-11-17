@@ -308,6 +308,8 @@ export function Hero() {
   const [applyUrl, setApplyUrl] = useState("https://2ydjdh3asn.zite.so");
   const [isTouch, setIsTouch] = useState(false);
   const [marqueeHover, setMarqueeHover] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
   /* ── parallax grid (mouse) ── */
   const mouseX = useMotionValue(0);
@@ -371,13 +373,16 @@ export function Hero() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  /* ── mouse handler for parallax ── */
+  /* ── mouse handler for parallax and interactive grid ── */
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      if (isTouch || reducedMotion) return;
       const rect = e.currentTarget.getBoundingClientRect();
-      mouseX.set(e.clientX - rect.left - rect.width / 2);
-      mouseY.set(e.clientY - rect.top - rect.height / 2);
+      const relX = e.clientX - rect.left;
+      const relY = e.clientY - rect.top;
+      setMousePosition({ x: relX, y: relY });
+      if (isTouch || reducedMotion) return;
+      mouseX.set(relX - rect.width / 2);
+      mouseY.set(relY - rect.height / 2);
     },
     [isTouch, reducedMotion, mouseX, mouseY]
   );
@@ -394,31 +399,47 @@ export function Hero() {
     <section
       className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden bg-white border-b-4 border-black pt-20"
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      {/* 5. Background: parallax dot-grid, desktop only, opacity < 0.15 */}
+      {/* Base Grid Texture Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:4rem_4rem] z-0" />
+
+      {/* Parallax Blueprint Grid (desktop only, shifts 8-12px opposite cursor) */}
       {!isTouch && !reducedMotion ? (
         <motion.div
           className="absolute inset-0 pointer-events-none z-0 hidden md:block"
           style={{ x: gridX, y: gridY }}
         >
           <div
-            className="w-full h-full opacity-[0.12]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle, #000 1px, transparent 1px)",
-              backgroundSize: "2rem 2rem",
-            }}
+            className="w-full h-full opacity-[0.10] bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:2rem_2rem]"
           />
         </motion.div>
-      ) : (
-        <div
-          className="absolute inset-0 pointer-events-none z-0 opacity-[0.12]"
+      ) : null}
+
+      {/* Colorful Interactive Grid Mask that follows cursor */}
+      {!isTouch && !reducedMotion && (
+        <div 
+          className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-150"
           style={{
-            backgroundImage:
-              "radial-gradient(circle, #000 1px, transparent 1px)",
-            backgroundSize: "2rem 2rem",
+            opacity: isHovering ? 1 : 0,
+            maskImage: `radial-gradient(circle 140px at ${mousePosition.x}px ${mousePosition.y}px, black 99%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(circle 140px at ${mousePosition.x}px ${mousePosition.y}px, black 99%, transparent 100%)`,
           }}
-        />
+        >
+          {/* Multiple Solid Colors (Grid) using the vibrant palette */}
+          <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-3 grid-rows-2 h-full w-full opacity-40">
+            <div className="bg-[#2DDFFF]" />
+            <div className="bg-[#F5F474]" />
+            <div className="bg-[#E33CC7] hidden md:block" />
+            <div className="bg-[#FFAA47]" />
+            <div className="bg-[#F54D28]" />
+            <div className="bg-black hidden md:block" />
+          </div>
+          
+          {/* Thicker Dark Grid Over the Solid Colors */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-25" />
+        </div>
       )}
 
       {/* 6. Section label with scramble */}
