@@ -64,7 +64,7 @@ export default function WorkWithUsPage() {
           >
             <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6">
               Work <br />
-              <span className="text-[var(--color-shipit-blue)]">With Us.</span>
+              <span className="text-[#2DDFFF]">With Us.</span>
             </h1>
             <p className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-black/80 max-w-2xl">
               Partner with the next generation of builders, hackers, and creators.
@@ -105,7 +105,7 @@ export default function WorkWithUsPage() {
             <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[var(--color-shipit-red)] rounded-full mix-blend-overlay opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
 
             <div className="relative z-10">
-              <h3 className="text-3xl font-black uppercase tracking-tight mb-8 text-[var(--color-shipit-yellow)]">
+              <h3 className="text-3xl font-black uppercase tracking-tight mb-8 text-[#F5F474]">
                 Get In Touch
               </h3>
               
@@ -114,7 +114,7 @@ export default function WorkWithUsPage() {
                   <label className="block text-sm font-bold uppercase tracking-widest mb-2 text-white/80">Name / Company</label>
                   <input 
                     type="text" 
-                    className="w-full bg-white/10 border-2 border-white/20 p-4 font-mono text-white focus:outline-none focus:border-[var(--color-shipit-yellow)] transition-colors"
+                    className="w-full bg-white/10 border-2 border-white/20 p-4 font-mono text-white focus:outline-none focus:border-[#F5F474] transition-colors"
                     placeholder="Jane Doe @ Acme Corp"
                   />
                 </div>
@@ -123,7 +123,7 @@ export default function WorkWithUsPage() {
                   <label className="block text-sm font-bold uppercase tracking-widest mb-2 text-white/80">Email</label>
                   <input 
                     type="email" 
-                    className="w-full bg-white/10 border-2 border-white/20 p-4 font-mono text-white focus:outline-none focus:border-[var(--color-shipit-yellow)] transition-colors"
+                    className="w-full bg-white/10 border-2 border-white/20 p-4 font-mono text-white focus:outline-none focus:border-[#F5F474] transition-colors"
                     placeholder="jane@example.com"
                   />
                 </div>
@@ -131,14 +131,14 @@ export default function WorkWithUsPage() {
                 <div>
                   <label className="block text-sm font-bold uppercase tracking-widest mb-2 text-white/80">How can we work together?</label>
                   <textarea 
-                    className="w-full bg-white/10 border-2 border-white/20 p-4 font-mono text-white focus:outline-none focus:border-[var(--color-shipit-yellow)] transition-colors h-32 resize-none"
+                    className="w-full bg-white/10 border-2 border-white/20 p-4 font-mono text-white focus:outline-none focus:border-[#F5F474] transition-colors h-32 resize-none"
                     placeholder="Tell us about your proposal..."
                   ></textarea>
                 </div>
 
                 <button 
                   type="button"
-                  className="bg-[var(--color-shipit-yellow)] text-black px-8 py-4 font-black uppercase tracking-widest text-xl hover:bg-white hover:-translate-y-1 transition-all mt-4 border-4 border-black"
+                  className="bg-[#F5F474] text-black px-8 py-4 font-black uppercase tracking-widest text-xl hover:bg-[#2DDFFF] hover:-translate-y-1 transition-all mt-4 border-4 border-black"
                 >
                   Send Message
                 </button>

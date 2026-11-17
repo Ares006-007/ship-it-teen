@@ -19,7 +19,7 @@ export function FinalBoss() {
 
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <div className="mb-12">
-          <span className="text-xl md:text-2xl font-bold tracking-widest text-white/60">
+          <span className="text-xl md:text-2xl font-bold tracking-widest text-[#2DDFFF]">
             05 // FINAL BOSS
           </span>
         </div>
@@ -52,7 +52,7 @@ export function FinalBoss() {
         >
           <a 
             href="mailto:join@shipitteens.com"
-            className="inline-block bg-white text-black px-12 py-6 text-2xl md:text-4xl font-black uppercase tracking-widest hover:bg-yellow-400 hover:-translate-y-2 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all border-4 border-black"
+            className="inline-block bg-[#F5F474] text-black px-12 py-6 text-2xl md:text-4xl font-black uppercase tracking-widest hover:bg-[#2DDFFF] hover:-translate-y-2 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all border-4 border-black"
           >
             Apply To Join
           </a>

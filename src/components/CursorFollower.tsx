@@ -67,7 +67,7 @@ export function CursorFollower() {
     >
       <div 
         className={`w-4 h-4 rounded-full transition-colors duration-200 ${
-          isHovering ? "bg-red-500" : "bg-white"
+          isHovering ? "bg-[#2DDFFF]" : "bg-white"
         }`} 
       />
     </motion.div>

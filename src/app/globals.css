@@ -9,11 +9,36 @@
   --color-shipit-black: #111111;
   --color-shipit-white: #FFFFFF;
 
+  /* Custom Psychedelic / Neo-Brutalist Palette */
+  --color-psychedelic-aqua: #2DDFFF;
+  --color-sunny: #F5F474;
+  --color-tech-pink: #E33CC7;
+  --color-romantic-orange: #FFAA47;
+  --color-dragon-fire: #F54D28;
+
+  --color-shipit-aqua: #2DDFFF;
+  --color-shipit-sunny: #F5F474;
+  --color-shipit-pink: #E33CC7;
+  --color-shipit-orange: #FFAA47;
+  --color-shipit-dragon: #F54D28;
+
   --font-sora: 'Sora', sans-serif;
   --font-poppins: 'Poppins', sans-serif;
 }
 
 :root {
+  --color-psychedelic-aqua: #2DDFFF;
+  --color-sunny: #F5F474;
+  --color-tech-pink: #E33CC7;
+  --color-romantic-orange: #FFAA47;
+  --color-dragon-fire: #F54D28;
+
+  --color-shipit-aqua: #2DDFFF;
+  --color-shipit-sunny: #F5F474;
+  --color-shipit-pink: #E33CC7;
+  --color-shipit-orange: #FFAA47;
+  --color-shipit-dragon: #F54D28;
+
   background-color: var(--color-shipit-white);
   color: var(--color-shipit-black);
 }

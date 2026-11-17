@@ -42,7 +42,7 @@ function StaggerHeadline({ reducedMotion }: { reducedMotion: boolean }) {
         {line1.join(" ")}
         <br />
         {line2.slice(0, 2).join(" ")}{" "}
-        <span className="text-blue-600 inline sm:inline">{line2[2]}</span>
+        <span className="text-[#2DDFFF] inline sm:inline">{line2[2]}</span>
       </h1>
     );
   }
@@ -71,7 +71,7 @@ function StaggerHeadline({ reducedMotion }: { reducedMotion: boolean }) {
         return (
           <motion.span
             key={globalIdx}
-            className={`inline-block mr-[0.25em] ${isMovement ? "text-blue-600" : ""}`}
+            className={`inline-block mr-[0.25em] ${isMovement ? "text-[#2DDFFF]" : ""}`}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -190,7 +190,7 @@ function MagneticCTA({
             : "4px 4px 0px 0px rgba(0,0,0,1)",
         }}
         transition={{ duration: 0.12 }}
-        whileHover={reducedMotion ? {} : { backgroundColor: "#2563FF" }}
+        whileHover={reducedMotion ? {} : { backgroundColor: "#2DDFFF", color: "#000000" }}
       >
         Apply to Join
       </motion.a>
@@ -462,9 +462,9 @@ export function Hero() {
           >
             <div className="relative aspect-video w-full bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow duration-200 overflow-hidden group">
               <div className="h-5 bg-black w-full flex items-center px-2 gap-1.5 absolute top-0 left-0 z-20">
-                <div className="w-2 h-2 rounded-full bg-[var(--color-shipit-red)] border border-black" />
-                <div className="w-2 h-2 rounded-full bg-[var(--color-shipit-yellow)] border border-black" />
-                <div className="w-2 h-2 rounded-full bg-[var(--color-shipit-green)] border border-black" />
+                <div className="w-2 h-2 rounded-full bg-[#F54D28] border border-black" />
+                <div className="w-2 h-2 rounded-full bg-[#F5F474] border border-black" />
+                <div className="w-2 h-2 rounded-full bg-[#2DDFFF] border border-black" />
               </div>
               <iframe
                 src={`${ytLinks.ytLink1}?autoplay=0&controls=1&showinfo=0`}
@@ -476,7 +476,7 @@ export function Hero() {
                 className="absolute inset-0 pt-5 w-full h-full"
               />
             </div>
-            <div className="absolute -bottom-3 -right-3 w-16 h-16 bg-[var(--color-shipit-yellow)] border-4 border-black -z-10" />
+            <div className="absolute -bottom-3 -right-3 w-16 h-16 bg-[#F5F474] border-4 border-black -z-10" />
           </motion.div>
 
           {/* 7. Video 2 — 80ms apart */}
@@ -499,9 +499,9 @@ export function Hero() {
           >
             <div className="relative aspect-video w-full bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow duration-200 overflow-hidden group">
               <div className="h-5 bg-black w-full flex items-center px-2 gap-1.5 absolute top-0 left-0 z-20">
-                <div className="w-2 h-2 rounded-full bg-[var(--color-shipit-red)] border border-black" />
-                <div className="w-2 h-2 rounded-full bg-[var(--color-shipit-yellow)] border border-black" />
-                <div className="w-2 h-2 rounded-full bg-[var(--color-shipit-green)] border border-black" />
+                <div className="w-2 h-2 rounded-full bg-[#F54D28] border border-black" />
+                <div className="w-2 h-2 rounded-full bg-[#F5F474] border border-black" />
+                <div className="w-2 h-2 rounded-full bg-[#2DDFFF] border border-black" />
               </div>
               <iframe
                 src={`${ytLinks.ytLink2}?autoplay=0&controls=1&showinfo=0`}
@@ -513,7 +513,7 @@ export function Hero() {
                 className="absolute inset-0 pt-5 w-full h-full"
               />
             </div>
-            <div className="absolute -top-3 -left-3 w-16 h-16 bg-[var(--color-shipit-blue)] border-4 border-black -z-10" />
+            <div className="absolute -top-3 -left-3 w-16 h-16 bg-[#2DDFFF] border-4 border-black -z-10" />
           </motion.div>
         </div>
       </div>

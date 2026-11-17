@@ -21,12 +21,12 @@ export function PartnerBanner() {
   return (
     <section
       className="relative py-10 md:py-14 bg-white border-b-4 border-black overflow-hidden"
-      aria-label="Events we've hosted with"
+      aria-label="Partners"
     >
       {/* Label */}
       <div className="max-w-7xl mx-auto px-6 mb-8">
         <span className="text-xs md:text-sm font-bold tracking-[0.2em] text-black/40 uppercase font-mono select-none">
-          EVENTS WE&apos;VE HOSTED WITH
+          Partners we've worked with
         </span>
       </div>
 

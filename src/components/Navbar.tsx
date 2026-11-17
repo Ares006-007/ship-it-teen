@@ -31,21 +31,21 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b-2 border-black"
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-black uppercase tracking-tighter hover:text-[var(--color-shipit-blue)] transition-colors">
+        <Link href="/" className="text-2xl font-black uppercase tracking-tighter hover:text-[#2DDFFF] transition-colors">
           ShipIt
         </Link>
         
         <div className="hidden md:flex items-center gap-8 font-bold text-sm tracking-widest uppercase">
-          <Link href="/#manifesto" className="hover:text-[var(--color-shipit-blue)] transition-colors">Manifesto</Link>
-          <Link href="/#work" className="hover:text-[var(--color-shipit-blue)] transition-colors">The Work</Link>
-          <Link href="/#experiences" className="hover:text-[var(--color-shipit-blue)] transition-colors">Experiences</Link>
+          <Link href="/#manifesto" className="hover:text-[#E33CC7] transition-colors">Manifesto</Link>
+          <Link href="/#work" className="hover:text-[#E33CC7] transition-colors">The Work</Link>
+          <Link href="/#experiences" className="hover:text-[#E33CC7] transition-colors">Experiences</Link>
         </div>
 
         <a 
           href={applyUrl} 
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-black text-white px-6 py-2 font-bold uppercase tracking-widest text-sm hover:bg-[var(--color-shipit-blue)] hover:text-white transition-colors border-2 border-black hover:border-[var(--color-shipit-blue)]"
+          className="bg-black text-white px-6 py-2 font-bold uppercase tracking-widest text-sm hover:bg-[#2DDFFF] hover:text-black transition-all border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5"
         >
           Apply to Join
         </a>

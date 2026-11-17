@@ -73,7 +73,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative bg-[var(--color-shipit-yellow)]">
+    <div className="min-h-screen flex items-center justify-center p-6 relative bg-[#F5F474]">
       {/* Grid Texture Background (from website aesthetic) */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
 
@@ -87,7 +87,7 @@ export default function AdminLogin() {
         </div>
 
         {error && (
-          <div className="bg-[var(--color-shipit-red)] border-4 border-black text-black font-bold p-3 text-sm font-poppins mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="bg-[#F54D28] text-white border-4 border-black font-bold p-3 text-sm font-poppins mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             {error}
           </div>
         )}
@@ -166,7 +166,7 @@ export default function AdminLogin() {
           <button 
             type="submit" 
             disabled={loading || googleLoading}
-            className="w-full bg-[var(--color-shipit-blue)] hover:bg-black hover:text-white text-white font-sora font-black uppercase tracking-widest py-4 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all flex items-center justify-center gap-2 mt-6 disabled:opacity-50 cursor-pointer"
+            className="w-full bg-[#2DDFFF] hover:bg-black hover:text-white text-black font-sora font-black uppercase tracking-widest py-4 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all flex items-center justify-center gap-2 mt-6 disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Authenticating..." : (
               <>Access Dashboard <ArrowRight className="w-5 h-5" /></>

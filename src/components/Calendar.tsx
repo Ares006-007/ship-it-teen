@@ -129,7 +129,7 @@ export function Calendar() {
                   {event.coverImage && (
                     <img src={event.coverImage} alt={event.title} className="hidden md:block w-64 h-auto shrink-0 object-contain grayscale group-hover:grayscale-0 transition-all duration-300" />
                   )}
-                  <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-blue-600 group-hover:text-yellow-400 transition-colors w-40 shrink-0">
+                  <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-[#F54D28] group-hover:text-[#2DDFFF] transition-colors w-40 shrink-0">
                     {event.date}
                   </div>
                   <div>
@@ -149,7 +149,7 @@ export function Calendar() {
                   className={`inline-block px-8 py-4 font-black uppercase tracking-widest border-4 transition-all ${
                     event.status.toUpperCase() === 'WAITLIST' || event.status.toUpperCase() === 'CLOSED' || event.status.toUpperCase() === 'RSVP YET TO OPEN'
                       ? 'border-gray-500 text-gray-500 bg-transparent cursor-not-allowed group-hover:border-gray-400 group-hover:text-gray-400' 
-                      : 'border-black bg-yellow-400 text-black group-hover:bg-white group-hover:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:-translate-y-1'
+                      : 'border-black bg-[#F5F474] text-black group-hover:bg-[#2DDFFF] group-hover:border-black group-hover:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1'
                   }`}
                 >
                   {event.status}

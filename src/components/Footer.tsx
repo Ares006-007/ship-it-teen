@@ -40,11 +40,11 @@ export function Footer() {
         </div>
         
         <div className="flex flex-wrap justify-center gap-8 font-bold uppercase tracking-widest text-sm text-white/60">
-          <Link href="/work-with-us" className="hover:text-white transition-colors">Work With Us</Link>
-          <a href={links.twitterUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
-          <a href={links.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-          <a href={links.discordUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Discord</a>
-          <Link href="/admin/login" className="hover:text-[var(--color-shipit-yellow)] transition-colors">Admin</Link>
+          <Link href="/work-with-us" className="hover:text-[#2DDFFF] transition-colors">Work With Us</Link>
+          <a href={links.twitterUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#2DDFFF] transition-colors">Twitter</a>
+          <a href={links.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#2DDFFF] transition-colors">GitHub</a>
+          <a href={links.discordUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#2DDFFF] transition-colors">Discord</a>
+          <Link href="/admin/login" className="hover:text-[#F5F474] transition-colors">Admin</Link>
         </div>
 
         <div className="font-bold uppercase tracking-widest text-sm text-white/40">

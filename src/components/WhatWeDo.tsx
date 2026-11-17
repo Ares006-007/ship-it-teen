@@ -6,17 +6,17 @@ const CARDS = [
   {
     title: "OPEN PROJECTS",
     subtitle: "SHIP SOFTWARE. OPEN SOURCE. PUBLIC REPOS.",
-    color: "bg-blue-600",
+    color: "bg-[#2DDFFF] text-black",
   },
   {
     title: "HARDWARE HACKS",
     subtitle: "CIRCUITS. RASPBERRY PIS. ROBOTICS. BREAK IT.",
-    color: "bg-red-600",
+    color: "bg-[#F54D28] text-white",
   },
   {
     title: "DEMO DAYS",
     subtitle: "PITCH IT. SHOW IT. NO SLIDES, JUST LIVE CODE.",
-    color: "bg-yellow-400 text-black",
+    color: "bg-[#F5F474] text-black",
   }
 ];
 

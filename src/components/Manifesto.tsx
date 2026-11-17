@@ -22,7 +22,7 @@ export function Manifesto() {
           <div>
             <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none mb-8">
               Stop Watching Tutorials.<br />
-              <span className="text-red-600">Start Writing Code.</span>
+              <span className="text-[#F54D28]">Start Writing Code.</span>
             </h2>
           </div>
           
@@ -31,7 +31,7 @@ export function Manifesto() {
               We are sick of tutorial hell. We are tired of asking for permission.
             </p>
             <p>
-              ShipIt is a collective of teen builders who actually <span className="text-black bg-yellow-300 px-2">make things</span>. Hardware, software, weird side projects, things that might break.
+              ShipIt is a collective of teen builders who actually <span className="text-black bg-[#F5F474] border-2 border-black px-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] inline-block">make things</span>. Hardware, software, weird side projects, things that might break.
             </p>
             <p>
               Sweat, code, and caffeine. That's the stack.

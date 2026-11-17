@@ -79,7 +79,7 @@ export function Experiences() {
                   )}
                 </div>
                 <div className="w-full md:w-2/3 p-8 flex flex-col justify-center">
-                  <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-4 group-hover:text-[var(--color-shipit-blue)] transition-colors">
+                  <h3 className="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-4 group-hover:text-[#2DDFFF] transition-colors">
                     {exp.name}
                   </h3>
                   <p className="text-2xl font-bold uppercase tracking-widest text-black/70">

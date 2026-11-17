@@ -15,6 +15,11 @@ type Experience = {
 };
 
 const COLORS = [
+  { label: "Psychedelic Aqua", value: "bg-[#2DDFFF]" },
+  { label: "Sunny Yellow", value: "bg-[#F5F474]" },
+  { label: "Tech Pink", value: "bg-[#E33CC7]" },
+  { label: "Romantic Orange", value: "bg-[#FFAA47]" },
+  { label: "Dragon Fire", value: "bg-[#F54D28]" },
   { label: "Light Blue", value: "bg-blue-100" },
   { label: "Light Red", value: "bg-red-100" },
   { label: "Light Yellow", value: "bg-yellow-100" },

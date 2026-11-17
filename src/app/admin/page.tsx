@@ -47,7 +47,7 @@ export default function AdminDashboard() {
 
       {/* Sidebar */}
       <div className="w-72 bg-white border-r-4 border-black flex flex-col z-10 relative">
-        <div className="p-6 border-b-4 border-black bg-[var(--color-shipit-yellow)]">
+        <div className="p-6 border-b-4 border-black bg-[#F5F474]">
           <h1 className="text-3xl font-sora font-black uppercase tracking-tighter">ShipIt Admin</h1>
           <p className="text-sm font-bold uppercase mt-1 font-poppins">System Control // 01</p>
         </div>
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
                   className="w-8 h-8 rounded-full border border-black object-cover"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-[var(--color-shipit-yellow)] border border-black flex items-center justify-center font-bold text-xs">
+                <div className="w-8 h-8 rounded-full bg-[#F5F474] border border-black flex items-center justify-center font-bold text-xs">
                   {currentUser.email ? currentUser.email[0].toUpperCase() : "U"}
                 </div>
               )}
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
           )}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[var(--color-shipit-red)] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 text-black font-sora font-black uppercase transition-all text-sm cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#F54D28] text-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 font-sora font-black uppercase transition-all text-sm cursor-pointer"
           >
             <LogOut className="w-5 h-5" />
             Sign Out
