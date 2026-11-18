@@ -14,6 +14,7 @@ import { ChevronDown } from "lucide-react";
 function getInitials(title: string) {
   return title
     .split(" ")
+    .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0])
     .join("")
@@ -35,13 +36,14 @@ function SkeletonRow() {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-4 border-black/20 p-6 md:p-8 animate-pulse gap-4">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 w-full md:w-auto">
+        <div className="hidden md:block w-64 h-36 bg-black/10 rounded" />
         <div className="h-10 w-32 bg-black/10 rounded" />
         <div className="space-y-2">
           <div className="h-8 w-56 bg-black/10 rounded" />
           <div className="h-4 w-40 bg-black/10 rounded" />
         </div>
       </div>
-      <div className="h-10 w-20 bg-black/10 rounded" />
+      <div className="h-12 w-28 bg-black/10 rounded" />
     </div>
   );
 }
@@ -59,6 +61,7 @@ function PastEventCard({
   openDescId: string | null;
   setOpenDescId: (id: string | null) => void;
 }) {
+  const [imgError, setImgError] = useState(false);
   const hasImages = (event.images?.length ?? 0) > 0;
   const hasProjects = (event.projects?.length ?? 0) > 0;
   const hasDescription = !!event.description?.trim();
@@ -75,20 +78,8 @@ function PastEventCard({
     setOpenDescId(descOpen ? null : event.id);
   }, [descOpen, event.id, setOpenDescId]);
 
-  const handleImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    img.style.display = "none";
-    const parent = img.parentElement;
-    if (!parent) return;
-    const tile = document.createElement("div");
-    tile.className =
-      "flex items-center justify-center w-full h-full bg-black/10 font-black text-black text-2xl";
-    tile.textContent = getInitials(event.title);
-    parent.appendChild(tile);
-  };
-
   const btnClass =
-    "px-5 py-2 font-black uppercase tracking-widest text-sm border-4 border-black bg-[#F5F474] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-0 active:shadow-none";
+    "px-5 py-2 font-black uppercase tracking-widest text-sm border-4 border-black bg-[#F5F474] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:bg-[#2DDFFF] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-y-0 active:shadow-none";
 
   return (
     <>
@@ -99,25 +90,29 @@ function PastEventCard({
         transition={{ duration: 0.4, delay: idx * 0.08 }}
         className="border-4 border-black group hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
       >
-        {/* Main row */}
+        {/* Main row — matches Calendar.tsx layout */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between p-6 md:p-8 gap-4 hover:bg-black hover:text-white transition-colors">
           {/* Left: image + meta */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 w-full md:w-auto">
-            {/* Cover image with explicit dimensions */}
-            {event.coverImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <div className="hidden md:block w-32 h-20 shrink-0 overflow-hidden border-2 border-black bg-black/5">
+            {/* Cover image with explicit dimensions and neutral initials fallback */}
+            <div className="hidden md:block w-64 h-36 shrink-0 overflow-hidden border-2 border-black bg-black/5">
+              {event.coverImage && !imgError ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={event.coverImage}
                   alt={event.title}
-                  width={128}
-                  height={80}
-                  onError={handleImgError}
+                  width={256}
+                  height={144}
+                  onError={() => setImgError(true)}
                   loading="lazy"
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                 />
-              </div>
-            ) : null}
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-black/10 font-black text-black group-hover:text-white text-2xl uppercase tracking-widest transition-colors">
+                  {getInitials(event.title)}
+                </div>
+              )}
+            </div>
 
             {/* Date */}
             <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-[#F54D28] group-hover:text-[#2DDFFF] transition-colors w-40 shrink-0">
@@ -135,13 +130,13 @@ function PastEventCard({
             </div>
           </div>
 
-          {/* Right: DONE tag */}
-          <div className="shrink-0 px-5 py-2 font-black uppercase tracking-widest text-sm border-4 border-black/40 text-black/40 group-hover:border-white/40 group-hover:text-white/40 transition-colors">
+          {/* Right: DONE tag in place of Open/Waitlist button */}
+          <div className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-gray-500 text-gray-500 bg-transparent group-hover:border-gray-400 group-hover:text-gray-400">
             DONE
           </div>
         </div>
 
-        {/* Button bar */}
+        {/* Button bar: IMAGES, PROJECTS, DESCRIPTION */}
         {hasAny ? (
           <div className="flex flex-wrap gap-3 px-6 md:px-8 pb-6 border-t-4 border-black pt-4 bg-white group-hover:bg-white">
             {hasImages && (
@@ -191,7 +186,7 @@ function PastEventCard({
             }`}
           >
             <div className="overflow-hidden">
-              <div className="px-6 md:px-8 py-6 prose prose-sm max-w-none font-poppins text-black/80 leading-relaxed whitespace-pre-wrap">
+              <div className="px-6 md:px-8 py-6 font-poppins text-black/80 leading-relaxed whitespace-pre-wrap">
                 {event.description}
               </div>
             </div>

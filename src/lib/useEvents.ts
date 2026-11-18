@@ -3,18 +3,22 @@
 /**
  * useEvents.ts
  *
- * Shared hook that fetches the `events` Firestore collection once and
- * splits it into `upcoming` and `past` arrays using the shared isPast()
+ * Shared hook that fetches the single `events` Firestore collection and
+ * splits it into `upcoming` and `past` arrays using the shared classifyEvent()
  * function.
  *
- * Re-checks on tab focus (visibilitychange) so an event that crosses its
- * end time while the user has the tab open moves sections without a redeploy.
+ * Rules:
+ * - One events data source feeds both sections.
+ * - An event is UPCOMING until its end moment passes, then PAST (03 // EXPERIENCES).
+ * - Never in both sections at once.
+ * - Invalid or missing dates: logged via console.warn and excluded from both sections.
+ * - Re-checks on tab focus (visibilitychange) so an event moves sections without a redeploy.
  */
 
 import { useState, useEffect, useCallback } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { isPast } from "@/lib/eventStatus";
+import { classifyEvent } from "@/lib/eventStatus";
 import type { FirestoreEvent } from "@/lib/eventTypes";
 
 export interface UseEventsResult {
@@ -33,32 +37,21 @@ export function useEvents(): UseEventsResult {
   const fetchAndSplit = useCallback(async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "events"));
-      const all: FirestoreEvent[] = [];
-      querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data() as Omit<FirestoreEvent, "id">;
-        // Validate: if startDate present but unparseable, log and skip
-        if (
-          data.startDate &&
-          isNaN(Date.parse(data.startDate.replace(/Z$/, "").replace(/[+-]\d{2}:\d{2}$/, "") + (data.startDate.includes("T") ? "Z" : "T00:00:00Z")))
-        ) {
-          console.warn(
-            `[useEvents] Event "${data.title}" has unparseable startDate "${data.startDate}" — excluded from both sections.`
-          );
-          return;
-        }
-        all.push({ id: docSnap.id, ...data });
-      });
-
       const nextUpcoming: FirestoreEvent[] = [];
       const nextPast: FirestoreEvent[] = [];
 
-      for (const event of all) {
-        if (isPast(event)) {
-          nextPast.push(event);
-        } else {
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data() as Omit<FirestoreEvent, "id">;
+        const event: FirestoreEvent = { id: docSnap.id, ...data };
+
+        const status = classifyEvent(event);
+        if (status === "upcoming") {
           nextUpcoming.push(event);
+        } else if (status === "past") {
+          nextPast.push(event);
         }
-      }
+        // If status === 'invalid', classifyEvent logs console.warn and we exclude it!
+      });
 
       setUpcoming(nextUpcoming);
       setPast(nextPast);
@@ -74,8 +67,7 @@ export function useEvents(): UseEventsResult {
   useEffect(() => {
     fetchAndSplit();
 
-    // Re-split on tab focus (handles day boundaries without a redeploy).
-    // We re-fetch to also pick up any newly added events.
+    // Re-split on tab focus (handles day boundaries without a redeploy)
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
         fetchAndSplit();

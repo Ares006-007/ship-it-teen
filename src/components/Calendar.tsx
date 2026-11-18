@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useEvents } from "@/lib/useEvents";
 import type { FirestoreEvent } from "@/lib/eventTypes";
 import { getEndTimestampMs } from "@/lib/eventStatus";
@@ -11,6 +11,7 @@ import { getEndTimestampMs } from "@/lib/eventStatus";
 function getInitials(title: string) {
   return title
     .split(" ")
+    .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0])
     .join("")
@@ -49,6 +50,7 @@ function SkeletonRow() {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between border-4 border-black/20 p-6 md:p-8 animate-pulse gap-4">
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 w-full md:w-auto">
+        <div className="hidden md:block w-64 h-36 bg-black/10 rounded" />
         <div className="h-10 w-32 bg-black/10 rounded" />
         <div className="space-y-2">
           <div className="h-8 w-56 bg-black/10 rounded" />
@@ -112,7 +114,7 @@ export function Calendar() {
           ) : sorted.length === 0 ? (
             <div className="text-center py-16 border-4 border-dashed border-black/20">
               <p className="text-xl font-black uppercase tracking-widest text-black/50 mb-4">
-                Nothing scheduled right now.
+                Nothing scheduled right now. Propose an event.
               </p>
               <a
                 href="/work-with-us"
@@ -135,19 +137,7 @@ export function Calendar() {
 /* ─── single event row ───────────────────────────────────────── */
 
 function EventRow({ event, idx }: { event: FirestoreEvent; idx: number }) {
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  const handleImgError = () => {
-    if (!imgRef.current) return;
-    imgRef.current.style.display = "none";
-    const parent = imgRef.current.parentElement;
-    if (!parent) return;
-    const tile = document.createElement("div");
-    tile.className =
-      "hidden md:flex w-16 h-16 items-center justify-center bg-black/10 border-2 border-black font-black text-black text-xl";
-    tile.textContent = getInitials(event.title);
-    parent.appendChild(tile);
-  };
+  const [imgError, setImgError] = useState(false);
 
   const isDisabled =
     ["WAITLIST", "CLOSED", "RSVP YET TO OPEN"].includes(
@@ -164,19 +154,25 @@ function EventRow({ event, idx }: { event: FirestoreEvent; idx: number }) {
       className="flex flex-col md:flex-row items-start md:items-center justify-between border-4 border-black p-6 md:p-8 hover:bg-black hover:text-white transition-colors group"
     >
       <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-12 mb-6 md:mb-0 w-full md:w-auto">
-        {/* Cover image — explicit dimensions prevent layout shift */}
-        {event.coverImage && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            ref={imgRef}
-            src={event.coverImage}
-            alt={event.title}
-            width={256}
-            height={144}
-            onError={handleImgError}
-            className="hidden md:block w-64 h-auto shrink-0 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-          />
-        )}
+        {/* Cover image with explicit dimensions and onError initials tile fallback */}
+        <div className="hidden md:block w-64 h-36 shrink-0 overflow-hidden border-2 border-black bg-black/5">
+          {event.coverImage && !imgError ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={event.coverImage}
+              alt={event.title}
+              width={256}
+              height={144}
+              onError={() => setImgError(true)}
+              loading="lazy"
+              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-black/10 font-black text-black group-hover:text-white text-2xl uppercase tracking-widest transition-colors">
+              {getInitials(event.title)}
+            </div>
+          )}
+        </div>
 
         {/* Date label */}
         <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-[#F54D28] group-hover:text-[#2DDFFF] transition-colors w-40 shrink-0">
@@ -220,8 +216,9 @@ function exportToICS(events: FirestoreEvent[]) {
     "PRODID:-//ShipIt Teens//Events//EN",
   ];
   for (const ev of events) {
-    if (!ev.startDate) continue;
-    const dtStart = ev.startDate.replace(/[-:]/g, "").slice(0, 15);
+    const startStr = ev.startDate || ev.date;
+    if (!startStr) continue;
+    const dtStart = startStr.replace(/[-:]/g, "").slice(0, 15);
     const dtEnd = ev.endDate
       ? ev.endDate.replace(/[-:]/g, "").slice(0, 15)
       : dtStart;
