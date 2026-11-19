@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import type { FirestoreEvent, EventImage, EventProject } from "@/lib/eventTypes";
 import { isPast } from "@/lib/eventStatus";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 export function ExperiencesManager() {
   const [events, setEvents] = useState<FirestoreEvent[]>([]);
@@ -46,6 +47,7 @@ export function ExperiencesManager() {
   const [isCreating, setIsCreating] = useState(false);
 
   // Recap Form State
+  const [recapCoverImage, setRecapCoverImage] = useState("");
   const [recapDesc, setRecapDesc] = useState("");
   const [recapVideo, setRecapVideo] = useState("");
   const [recapImages, setRecapImages] = useState<EventImage[]>([]);
@@ -93,6 +95,7 @@ export function ExperiencesManager() {
   // When an event is picked to edit its recap
   const handleSelectEvent = (ev: FirestoreEvent) => {
     setEditingEvent(ev);
+    setRecapCoverImage(ev.coverImage || "");
     setRecapDesc(ev.description || "");
     setRecapVideo(ev.recapVideoUrl || "");
     setRecapImages(ev.images || []);
@@ -158,6 +161,7 @@ export function ExperiencesManager() {
 
     try {
       await updateDoc(doc(db, "events", editingEvent.id), {
+        coverImage: recapCoverImage.trim() || undefined,
         description: recapDesc.trim(),
         recapVideoUrl: recapVideo.trim(),
         images: recapImages,
@@ -168,6 +172,7 @@ export function ExperiencesManager() {
       // Update local state
       setEditingEvent({
         ...editingEvent,
+        coverImage: recapCoverImage.trim() || undefined,
         description: recapDesc.trim(),
         recapVideoUrl: recapVideo.trim(),
         images: recapImages,
@@ -337,16 +342,13 @@ export function ExperiencesManager() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-poppins font-bold uppercase mb-1">
-                  Cover Image URL
-                </label>
-                <input
-                  type="url"
+              <div className="md:col-span-2">
+                <ImageUploadField
+                  label="Cover Image"
                   value={newCoverImage}
-                  onChange={(e) => setNewCoverImage(e.target.value)}
-                  placeholder="https://..."
-                  className="w-full bg-white border-4 border-black p-3 font-poppins text-black"
+                  onChange={setNewCoverImage}
+                  storageFolder="events/covers"
+                  hint="Upload an image file directly or paste an external image URL."
                 />
               </div>
 
@@ -606,6 +608,17 @@ export function ExperiencesManager() {
             </div>
           </div>
 
+          {/* Event Cover Image */}
+          <div className="bg-neutral-50 p-4 border-2 border-black">
+            <ImageUploadField
+              label="Event Cover Image"
+              value={recapCoverImage}
+              onChange={setRecapCoverImage}
+              storageFolder="events/covers"
+              hint="Upload an image file directly or paste an external image URL."
+            />
+          </div>
+
           {/* Section 1: Event Story / Description */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -684,15 +697,14 @@ export function ExperiencesManager() {
               <span className="text-xs font-bold uppercase tracking-wider block text-black/70">
                 + Add Photo to Gallery
               </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <input
-                  type="url"
-                  required
-                  placeholder="Image URL (https://...)"
-                  value={newImgUrl}
-                  onChange={(e) => setNewImgUrl(e.target.value)}
-                  className="bg-white border-2 border-black p-2 font-poppins text-xs text-black"
-                />
+              <ImageUploadField
+                label="Photo Image"
+                value={newImgUrl}
+                onChange={setNewImgUrl}
+                storageFolder="events/gallery"
+                hint="Upload a photo from your computer or paste a direct image URL."
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 <input
                   type="text"
                   placeholder="Alt text (e.g. Teens building robots)"
@@ -710,7 +722,8 @@ export function ExperiencesManager() {
               </div>
               <button
                 type="submit"
-                className="px-4 py-2 bg-black text-white font-sora font-black uppercase text-xs border-2 border-black hover:bg-[#2DDFFF] hover:text-black transition-colors"
+                disabled={!newImgUrl.trim()}
+                className="px-4 py-2 bg-black text-white font-sora font-black uppercase text-xs border-2 border-black hover:bg-[#2DDFFF] hover:text-black transition-colors disabled:opacity-40"
               >
                 + Add to Photo Gallery
               </button>

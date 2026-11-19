@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import type { FirestoreEvent, EventImage, EventProject } from "@/lib/eventTypes";
 import { isPast } from "@/lib/eventStatus";
+import { ImageUploadField } from "@/components/admin/ImageUploadField";
 
 /* ─── blank form state ───────────────────────────────────────── */
 
@@ -396,14 +397,13 @@ export function EventsManager() {
                 className={inputClass}
               />
             </Field>
-            <Field label="Cover Image URL">
-              <input
-                type="url"
-                value={form.coverImage ?? ""}
-                onChange={(e) => patch("coverImage", e.target.value)}
-                className={inputClass}
-              />
-            </Field>
+            <ImageUploadField
+              label="Cover Image"
+              value={form.coverImage ?? ""}
+              onChange={(url) => patch("coverImage", url)}
+              storageFolder="events/covers"
+              hint="Upload an image file directly or paste an external image URL."
+            />
             <Field
               label="Start Date (ISO 8601)"
               hint="e.g. 2026-11-16 or 2026-11-16T10:00:00 — REQUIRED for lifecycle logic."
