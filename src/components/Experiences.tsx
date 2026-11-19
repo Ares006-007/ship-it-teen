@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useRef, useCallback } from "react";
+import Link from "next/link";
 import { useEvents } from "@/lib/useEvents";
 import { getEndTimestampMs } from "@/lib/eventStatus";
 import type { FirestoreEvent } from "@/lib/eventTypes";
@@ -130,25 +131,13 @@ function PastEventCard({
             </div>
           </div>
 
-          {/* Right: VIEW EVENT action button */}
-          {event.link ? (
-            <a
-              href={event.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-black bg-[#F5F474] text-black group-hover:bg-[#2DDFFF] group-hover:border-black group-hover:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all shrink-0"
-            >
-              VIEW EVENT →
-            </a>
-          ) : (
-            <button
-              type="button"
-              onClick={hasDescription ? toggleDesc : (hasImages ? () => setGalleryOpen(true) : undefined)}
-              className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-black bg-[#F5F474] text-black group-hover:bg-[#2DDFFF] group-hover:border-black group-hover:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all shrink-0 cursor-pointer"
-            >
-              VIEW RECAP →
-            </button>
-          )}
+          {/* Right: VIEW EVENT button takes to dedicated recap/detail page */}
+          <Link
+            href={`/events/${event.id}`}
+            className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-black bg-[#F5F474] text-black group-hover:bg-[#2DDFFF] group-hover:border-black group-hover:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all shrink-0 text-center"
+          >
+            VIEW EVENT →
+          </Link>
         </div>
 
         {/* Button bar: IMAGES, PROJECTS, DESCRIPTION */}
