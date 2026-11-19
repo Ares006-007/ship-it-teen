@@ -10,7 +10,8 @@ import partners from "@/data/partners";
  * - Infinite horizontal right-to-left marquee (CSS translateX keyframe only)
  * - 40s desktop, 28s mobile, pause on hover (desktop only)
  * - Mask-image edge fade
- * - First 4 logos are accessible (real alt, focusable); all duplicates are aria-hidden & tabIndex -1
+ * - Logos kept in full original color (no grayscale)
+ * - First set accessible (real alt, focusable); all duplicates aria-hidden & tabIndex -1
  * - prefers-reduced-motion renders static wrapping row with no animation
  */
 export function PartnerBanner() {
@@ -33,7 +34,7 @@ export function PartnerBanner() {
       {/* Marquee with left/right fade mask */}
       <div className="partner-marquee-mask overflow-hidden w-full">
         <div className="partner-marquee-track flex w-max">
-          {/* Block 1: Real set (first 4 items focusable) + repeated fillers for width */}
+          {/* Block 1: Real set (first set focusable) + repeated fillers for width */}
           <div className="flex items-center gap-16 pr-16 shrink-0" role="list">
             {logoSet.map((partner, i) => {
               const isFirstSet = i < partners.length;
@@ -51,7 +52,7 @@ export function PartnerBanner() {
                   <Image
                     src={partner.logo}
                     alt={isFirstSet ? partner.alt : ""}
-                    className="h-[40px] md:h-[56px] w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-[filter,opacity] duration-200"
+                    className="h-[40px] md:h-[56px] w-auto object-contain opacity-100 hover:opacity-80 transition-opacity duration-200"
                     loading={isFirstSet ? "eager" : "lazy"}
                     draggable={false}
                   />
@@ -74,7 +75,7 @@ export function PartnerBanner() {
                 <Image
                   src={partner.logo}
                   alt=""
-                  className="h-[40px] md:h-[56px] w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-[filter,opacity] duration-200"
+                  className="h-[40px] md:h-[56px] w-auto object-contain opacity-100 hover:opacity-80 transition-opacity duration-200"
                   loading="lazy"
                   draggable={false}
                 />
@@ -98,7 +99,7 @@ export function PartnerBanner() {
               <Image
                 src={partner.logo}
                 alt={partner.alt}
-                className="h-[40px] md:h-[56px] w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-[filter,opacity] duration-200"
+                className="h-[40px] md:h-[56px] w-auto object-contain opacity-100 hover:opacity-80 transition-opacity duration-200"
                 loading="eager"
                 draggable={false}
               />
