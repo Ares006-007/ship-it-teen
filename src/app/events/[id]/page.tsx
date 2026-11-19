@@ -213,14 +213,14 @@ export default function EventDetailPage() {
 
         {/* Hero Cover Image (if present) */}
         {event.coverImage && (
-          <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden bg-black/5 max-h-[480px]">
+          <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden bg-neutral-100 max-h-[480px] flex items-center justify-center">
             {!imgError ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={event.coverImage}
                 alt={event.title}
                 onError={() => setImgError(true)}
-                className="w-full h-full object-cover max-h-[480px]"
+                className="w-full h-auto object-contain max-h-[480px]"
               />
             ) : (
               <div className="w-full h-64 flex items-center justify-center bg-black/10 font-sora font-black text-4xl uppercase tracking-widest text-black/50">

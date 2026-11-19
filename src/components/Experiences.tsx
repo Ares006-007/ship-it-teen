@@ -106,7 +106,7 @@ function PastEventCard({
                   height={144}
                   onError={() => setImgError(true)}
                   loading="lazy"
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                  className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-black/10 font-black text-black group-hover:text-white text-2xl uppercase tracking-widest transition-colors">
