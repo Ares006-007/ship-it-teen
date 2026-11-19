@@ -33,7 +33,7 @@ export default function AdminDashboard() {
   const tabs = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
     { id: "site-config", label: "Site Configuration", icon: Settings },
-    { id: "experiences", label: "Experiences & Recaps", icon: Sparkles },
+    { id: "experiences", label: "Past Editions & Recaps", icon: Sparkles },
     { id: "events", label: "Events & Calendar", icon: Calendar },
     { id: "jobs", label: "Hiring & Jobs", icon: Briefcase },
     { id: "projects", label: "Projects Showcase", icon: ImageIcon },

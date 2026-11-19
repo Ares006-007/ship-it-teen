@@ -251,17 +251,17 @@ export function ExperiencesManager() {
       {/* Top Banner / Explainer */}
       <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 relative">
         <div className="absolute top-0 right-0 bg-[#F54D28] text-white px-4 py-1 font-bold uppercase text-xs border-b-4 border-l-4 border-black">
-          Experiences Manager
+          Past Editions Manager
         </div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h2 className="text-3xl font-sora font-black uppercase text-black flex items-center gap-3">
               <Sparkles className="w-8 h-8 text-[#2DDFFF]" />
-              Event Recaps &amp; Experiences
+              Past Editions &amp; Recaps
             </h2>
             <p className="font-poppins text-black/70 text-sm mt-1 max-w-2xl">
               Manage recaps for past events shown on the homepage under{" "}
-              <strong>03 // EXPERIENCES</strong>. Add photo galleries, student project
+              <strong>03 // PAST EDITIONS &amp; RECAPS</strong>. Add photo galleries, student project
               showcases, and event recap stories.
             </p>
           </div>
@@ -276,7 +276,7 @@ export function ExperiencesManager() {
             }}
             className="bg-[#F5F474] text-black font-sora font-black uppercase tracking-wider px-6 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:bg-[#2DDFFF] transition-all flex items-center gap-2 shrink-0"
           >
-            <Plus className="w-5 h-5" /> Add New Experience
+            <Plus className="w-5 h-5" /> Add Past Edition
           </button>
         </div>
       </div>

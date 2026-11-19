@@ -130,10 +130,25 @@ function PastEventCard({
             </div>
           </div>
 
-          {/* Right: DONE tag in place of Open/Waitlist button */}
-          <div className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-gray-500 text-gray-500 bg-transparent group-hover:border-gray-400 group-hover:text-gray-400">
-            DONE
-          </div>
+          {/* Right: VIEW EVENT action button */}
+          {event.link ? (
+            <a
+              href={event.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-black bg-[#F5F474] text-black group-hover:bg-[#2DDFFF] group-hover:border-black group-hover:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all shrink-0"
+            >
+              VIEW EVENT →
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={hasDescription ? toggleDesc : (hasImages ? () => setGalleryOpen(true) : undefined)}
+              className="inline-block px-8 py-4 font-black uppercase tracking-widest border-4 border-black bg-[#F5F474] text-black group-hover:bg-[#2DDFFF] group-hover:border-black group-hover:text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all shrink-0 cursor-pointer"
+            >
+              VIEW RECAP →
+            </button>
+          )}
         </div>
 
         {/* Button bar: IMAGES, PROJECTS, DESCRIPTION */}
@@ -234,7 +249,7 @@ export function Experiences() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-16">
           <span className="text-xl md:text-2xl font-bold tracking-widest text-black/40">
-            03 // EXPERIENCES
+            03 // PAST EDITIONS &amp; RECAPS
           </span>
         </div>
 

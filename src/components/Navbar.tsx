@@ -38,7 +38,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8 font-bold text-sm tracking-widest uppercase">
           <Link href="/#manifesto" className="hover:text-[#E33CC7] transition-colors">Manifesto</Link>
           <Link href="/#work" className="hover:text-[#E33CC7] transition-colors">The Work</Link>
-          <Link href="/#experiences" className="hover:text-[#E33CC7] transition-colors">Experiences</Link>
+          <Link href="/#experiences" className="hover:text-[#E33CC7] transition-colors">Past Editions</Link>
         </div>
 
         <a 
